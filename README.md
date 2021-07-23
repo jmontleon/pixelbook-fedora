@@ -283,6 +283,8 @@ For the keyboard backlight I created another script and set a shortcut up to run
 
 file=/sys/class/leds/chromeos\:\:kbd_backlight/brightness
 
+sudo chmod 666 $file
+
 read -r cur < "$file"
 
 if [ "$cur" -eq "0" ]; then
