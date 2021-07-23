@@ -8,12 +8,12 @@ What works and doesn't work:
 | ------------- |-------------|
 | Audio | [Working](#Audio) |
 | Backlight / Brightness | [Poor](#Brightness) |
-| Bluetooth | Working (not well tested) |
+| Bluetooth | Working |
 | Camera | Working |
 | Keyboard | [Working](#Keyboard) |
 | Sleep | Working |
 | Touchpad | [Working](#Touchpad) |
-| Touchscreen | Working (haven't figured out emulated mouse clicks) |
+| Touchscreen | [Working](#Touchscreen) |
 | Wireless | Working |
 
 ## Required Hardware
@@ -310,3 +310,61 @@ Section "InputClass"
 EndSection
 EOF
 ```
+
+## Touchscreen
+- `sudo dnf -y install python3-evdev xinput`
+- `sudo usermod -aG input $username`
+- `pip3 install --user PyUserInput`
+- Create the python script:
+
+```
+#!/bin/python3
+
+from evdev import InputDevice
+import time
+from pymouse import PyMouse
+from threading import Timer
+import subprocess
+
+dev = InputDevice('/dev/input/event4')
+m = PyMouse()
+lasttime = time.time()
+rlasttime = time.time()
+originaltime = lasttime
+oldclickx = 0
+oldclicky = 0
+
+
+for event in dev.read_loop():
+
+    if event.type == 3 and event.code == 47 and event.value == 1:
+        rclicktime = time.time()
+        if (rclicktime - rlasttime) < .5:
+            rlasttime = rclicktime
+        else:
+            print("Two Finger tap.")
+            subprocess.check_call(['xinput', '--disable', 'WCOM50C1:00 2D1F:5143'])
+            x2, y2 = m.position()  # Get the pointer coordinates
+            m.click(x2, y2, 2)
+            subprocess.check_call(['xinput', '--enable', 'WCOM50C1:00 2D1F:5143'])
+            rlasttime = rclicktime
+
+    elif event.type == 1 and event.code == 330 and event.value == 1:
+        clicktime = time.time()
+        clickx, clicky = m.position()
+        if (clicktime - lasttime) < .5 and (abs(clickx - oldclickx) < 20) and (abs(clicky - oldclicky) < 20):
+            print("Double click.")
+            subprocess.check_call(['xinput', '--disable', 'WCOM50C1:00 2D1F:5143'])
+            x2, y2 = m.position()
+            m.click(x2, y2, 1)
+            m.click(x2, y2, 1)
+            subprocess.check_call(['xinput', '--enable', 'WCOM50C1:00 2D1F:5143'])
+            lasttime = originaltime
+        else:
+            lasttime = clicktime
+        oldclickx = clickx
+        oldclicky = clicky
+```
+
+- Configure the script to autostart at login.
+- Reboot and you should be able to click and double click using the touchscreen.
