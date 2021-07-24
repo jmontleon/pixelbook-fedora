@@ -322,6 +322,7 @@ fi
 EOF
 chmod +x ~/bin/keyboard-backlight.sh
 ```
+- Add yourself to the input group: `sudo usermod -aG input $USER`
 
 ## Touchpad
 I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted.
@@ -341,9 +342,9 @@ EOF
 ```
 
 ## Touchscreen
-- `sudo dnf copr enable jmontleon/pynput`
-- `sudo dnf -y install xinput python3-evdev python3-pynput`
-- `sudo usermod -aG input $USER`
+- Enable the COPR repo with the dependencies: `sudo dnf copr enable jmontleon/pynput`
+- Install the dependencies: `sudo dnf -y install xinput python3-evdev python3-pynput`
+- Add yourself to the input group if you haven't already: `sudo usermod -aG input $USER`
 - Create the python script:
 ```
 mkdir -p ~/bin
