@@ -341,9 +341,9 @@ EOF
 ```
 
 ## Touchscreen
-- `sudo dnf -y install xinput`
+- `sudo dnf copr enable jmontleon/pynput`
+- `sudo dnf -y install xinput python3-evdev python3-pynput`
 - `sudo usermod -aG input $username`
-- Download and install the RPMS for python-evdev and python-pynput in this repo or `pip3 install --user pynput`
 - Create the python script:
 ```
 mkdir -p ~/bin
