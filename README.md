@@ -316,7 +316,7 @@ EOF
 ## Touchscreen
 - `sudo dnf -y install python3-evdev xinput`
 - `sudo usermod -aG input $username`
-- `pip3 install --user PyUserInput`
+- Download and install the RPMS for python-evdev and python-pynput in this repo or `pip3 install --user pynput`
 - Create the python script:
 
 ```
@@ -324,12 +324,12 @@ EOF
 
 from evdev import InputDevice
 import time
-from pymouse import PyMouse
+from pynput.mouse import Button, Controller
 from threading import Timer
 import subprocess
 
 dev = InputDevice('/dev/input/event4')
-m = PyMouse()
+m = Controller()
 lasttime = time.time()
 rlasttime = time.time()
 originaltime = lasttime
@@ -346,20 +346,17 @@ for event in dev.read_loop():
         else:
             print("Two Finger tap.")
             subprocess.check_call(['xinput', '--disable', 'WCOM50C1:00 2D1F:5143'])
-            x2, y2 = m.position()  # Get the pointer coordinates
-            m.click(x2, y2, 2)
+            m.click(Button.right, 1)
             subprocess.check_call(['xinput', '--enable', 'WCOM50C1:00 2D1F:5143'])
             rlasttime = rclicktime
 
     elif event.type == 1 and event.code == 330 and event.value == 1:
         clicktime = time.time()
-        clickx, clicky = m.position()
+        clickx, clicky = m.position
         if (clicktime - lasttime) < .5 and (abs(clickx - oldclickx) < 20) and (abs(clicky - oldclicky) < 20):
             print("Double click.")
             subprocess.check_call(['xinput', '--disable', 'WCOM50C1:00 2D1F:5143'])
-            x2, y2 = m.position()
-            m.click(x2, y2, 1)
-            m.click(x2, y2, 1)
+            m.click(Button.left, 2)
             subprocess.check_call(['xinput', '--enable', 'WCOM50C1:00 2D1F:5143'])
             lasttime = originaltime
         else:
