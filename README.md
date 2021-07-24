@@ -343,7 +343,7 @@ EOF
 ## Touchscreen
 - `sudo dnf copr enable jmontleon/pynput`
 - `sudo dnf -y install xinput python3-evdev python3-pynput`
-- `sudo usermod -aG input $username`
+- `sudo usermod -aG input $USER`
 - Create the python script:
 ```
 mkdir -p ~/bin
