@@ -203,7 +203,25 @@ EOF
 
 ## Brightness
 The brightness only has two states, full or off. The backlight can be set with xrandr. To get something that felt mostly OK I used this script:
+
+- `sudo usermod -aG video $USER`
+- Add udev rules to give the video group access to modify brightness. This file will also do the same for the keyboard leds using the input group. The rest of the setup for that will be covered in the keyboard section below.
+
+As root:
 ```
+cat << EOF > /etc/udev/rules.d/backlights.rules
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+
+ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"
+ACTION=="change", SUBSYSTEM=="leds", ENV{TRIGGER}!="none", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"
+EOF
+```
+
+Create this script
+```
+mkdir -p ~/bin
+cat << EOF > ~/bin/backlight.sh
 #!/bin/bash
 
 max=10
@@ -233,7 +251,6 @@ if ((val > max)); then ((val = max)); fi
 
 printf '%d' "$val" > "$file"
 
-sudo chmod 666 /sys/class/backlight/intel_backlight/brightness
 if [ "$val" -eq "0" ]; then
   echo "0" > /sys/class/backlight/intel_backlight/brightness
 else
@@ -241,11 +258,15 @@ else
 fi
 
 xrandr --output eDP-1 --brightness $(echo - | awk "{ print $val / 10 }")
+EOF
+chmod +x ~/bin/backlight.sh
 ```
 
 I then created keyboard shortcuts for the brightnessup and brightnessdown keys to instead run `backlight.sh --increase` and `backlight.sh --decrease` using the brightnessup and brightnessdown keys. Complete the keyboard section and reboot for this to function.
 
 ## Keyboard
+
+### Hotkeys
 - As root:
 ```
 cat << EOF > /lib/udev/hwdb.d/61-eve-keyboard.hwdb
@@ -273,17 +294,21 @@ EOF
 ```
 - `systemd-hwdb update`
 
+### Capslock
 To use the Search key as a Capslock:
 - `sudo dnf -y install xdotool`
 - Configure a keyboard shortcut for SuperL to run `xdotool key Caps_Lock`
 
+### Backlight
 For the keyboard backlight I created another script and set a shortcut up to run it when I press `ctrl+space`.
+- Ensure you set up the udev rules in the Backlight/Brightness section for the display.
+- Create the script
 ```
+mkdir -p ~/bin
+cat << EOF > ~/bin/keyboard-backlight.sh
 #!/bin/bash
 
 file=/sys/class/leds/chromeos\:\:kbd_backlight/brightness
-
-sudo chmod 666 $file
 
 read -r cur < "$file"
 
@@ -294,10 +319,12 @@ elif [ "$cur" -eq "100" ]; then
 else
   printf '%d' "100" > "$file"
 fi
+EOF
+chmod +x ~/bin/keyboard-backlight.sh
 ```
 
 ## Touchpad
-I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root:
+I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted.
 
 ```
 cat << EOF > /etc/X11/xorg.conf.d/99-libinput-custom-config.conf
@@ -314,12 +341,13 @@ EOF
 ```
 
 ## Touchscreen
-- `sudo dnf -y install python3-evdev xinput`
+- `sudo dnf -y install xinput`
 - `sudo usermod -aG input $username`
 - Download and install the RPMS for python-evdev and python-pynput in this repo or `pip3 install --user pynput`
 - Create the python script:
-
 ```
+mkdir -p ~/bin
+cat << EOF > ~/bin/clickfix.py
 #!/bin/python3
 
 from evdev import InputDevice
@@ -363,6 +391,8 @@ for event in dev.read_loop():
             lasttime = clicktime
         oldclickx = clickx
         oldclicky = clicky
+EOF
+chmod +x ~/bin/clickfix.py
 ```
 
 - Configure the script to autostart at login.
