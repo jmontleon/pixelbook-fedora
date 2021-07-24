@@ -396,4 +396,4 @@ chmod +x ~/bin/clickfix.py
 ```
 
 - Configure the script to autostart at login.
-- Reboot and you should be able to click and right click (two finger tap) using the touchscreen.
+- Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
