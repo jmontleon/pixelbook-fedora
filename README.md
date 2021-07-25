@@ -62,48 +62,12 @@ What works and doesn't work:
 The brightness only has two states, full or off. The backlight can be set with xrandr. To get something resembling brightness adustment we'll start in this section and finish up in the keyboard section.
 
 - `sudo usermod -aG video $USER`
-- Add udev rules to give the video group access to modify brightness. This file will also do the same for the keyboard leds using the input group. The rest of the setup for that will be covered in the keyboard section below.
-- `sudo dnf install pixelbook-scripts`  
-As root:
-```
-cat << EOF > /etc/udev/rules.d/backlights.rules
-ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
-ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
-
-ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"
-ACTION=="change", SUBSYSTEM=="leds", ENV{TRIGGER}!="none", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"
-EOF
-```
+- `sudo dnf install pixelbook-scripts pixelbook-udev`  
 
 ## Keyboard
 
 ### Hotkeys
-- As root:
-```
-cat << EOF > /lib/udev/hwdb.d/61-eve-keyboard.hwdb
-# Copyright 2017 The Chromium OS Authors. All rights reserved.
-# Distributed under the terms of the GNU General Public License v2
-#
-# Special keyboard mapping for Eve project. The keyboard has extra
-# "Assistant" and "Hamburger" keys.
-#
-evdev:atkbd:dmi:bvn*:bvr*:bd*:svnGoogle:pnEve:pvr*
-# KEYBOARD_KEY_5d=controlpanel
- KEYBOARD_KEY_d8=rightmeta
- KEYBOARD_KEY_db=leftmeta
- KEYBOARD_KEY_3b=back
- KEYBOARD_KEY_3c=f5
- KEYBOARD_KEY_3d=f11
- KEYBOARD_KEY_3e=print
- KEYBOARD_KEY_3f=brightnessdown
- KEYBOARD_KEY_40=brightnessup
- KEYBOARD_KEY_41=playpause
- KEYBOARD_KEY_42=mute
- KEYBOARD_KEY_43=volumedown
- KEYBOARD_KEY_44=volumeup
-EOF
-```
-- `systemd-hwdb update`
+- `sudo dnf -y install pixelbook-keyboard-hotkeys`
 
 ### Capslock
 To use the Search key as a Capslock:
@@ -119,21 +83,9 @@ Create keyboard shortcuts for the brightnessup and brightnessdown keys to instea
 Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
 
 ## Touchpad
-I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted.
+I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted. 
 
-```
-cat << EOF > /etc/X11/xorg.conf.d/99-libinput-custom-config.conf
-Section "InputClass"
-        Identifier "TouchPad"
-        MatchIsTouchpad "on"
-        MatchDevicePath "/dev/input/event*"
-        Option "Tapping" "on"
-        Option "TappingDrag" "off"
-        Option "TappingDragLock" "off"
-        Driver "libinput"
-EndSection
-EOF
-```
+- If you want the same tweak run `sudo dnf -y install pixelbook-touchpad-tweak`
 
 ## Touchscreen
 - Install the dependencies: `sudo dnf -y install pixebolbook-scripts` if you haven't already
