@@ -39,6 +39,7 @@ What works and doesn't work:
 ## Install Fedora
 - Prepare a bootable [Fedora USB stick](https://fedoramagazine.org/make-fedora-usb-stick/)
 - Insert it into the Pixelbook and install it normally.
+- sudo dnf copr enable jmontleon/pixelbook
 
 ## Audio
 - By default audio will not work at all.
@@ -53,160 +54,15 @@ What works and doesn't work:
   - `sudo cp /mnt/lib/firmware/intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin /lib/firmware/intel`
   - `sudo cp /mnt//opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin`
 - Replace pipewire with pulseaudio, otherwise the mic produces only noise `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`. [Pipeiwire Issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452)
-- As root:
-```
-cat << EOF > /usr/share/alsa/ucm2/kbl-r5514-5663-/kbl-r5514-5663-.conf
-Syntax 4
-
-SectionUseCase."HiFi" {
-	File "HiFi.conf"
-	Comment "Default"
-}
-EOF
-```
-
-```
-cat << EOF > /usr/share/alsa/ucm2/kbl-r5514-5663-/HiFi.conf
-SectionVerb {
-        EnableSequence [
-                cdev "hw:kblr55145663max"
-
-                cset "name='codec1_out mo hs_pb_in mi Switch' on"
-                cset "name='Left DAI Sel Mux' Left"
-                cset "name='Right DAI Sel Mux' Right"
-                cset "name='Left Speaker Volume' 3"
-                cset "name='Right Speaker Volume' 3"
-                cset "name='Left Digital Volume' 60"
-                cset "name='Right Digital Volume' 60"
-                cset "name='Left Spk Switch' on"
-                cset "name='Right Spk Switch' on"
-                cset "name='Left Boost Output Voltage' 0"
-                cset "name='Right Boost Output Voltage' 0"
-                cset "name='Left Current Limit' 7"
-                cset "name='Right Current Limit' 7"
-                cset "name='Headphone Playback Volume' 16"
-                cset "name='Headset Mic Switch' off"
-                cset "name='DMIC Switch' on"
-                cset "name='STO1 ADC MIXL ADC1 Switch' on"
-                cset "name='Pin5-Port0 Mux' 2"
-                cset "name='Pin5-Port1 Mux' 2"
-                cset "name='Pin5-Port2 Mux' 2"
-                cset "name='Pin6-Port0 Mux' 1"
-                cset "name='Pin6-Port1 Mux' 1"
-                cset "name='Pin6-Port2 Mux' 1"
-                cset "name='Pin7-Port0 Mux' 3"
-                cset "name='Pin7-Port1 Mux' 3"
-                cset "name='Pin7-Port2 Mux' 3"
-                cset "name='ADC Capture Volume' 35"
-                cset "name='ADC1 Capture Volume' 55"
-                cset "name='ADC2 Capture Volume' 55"
-                cset "name='DAC L Mux' STO DAC MIXL"
-                cset "name='DAC R Mux' STO DAC MIXR"
-                cset "name='STO1 DAC MIXL DAC L Switch' on"
-                cset "name='STO1 DAC MIXR DAC R Switch' on"
-                cset-tlv "name='spk_pb_in dsm 0 dsm_params params' /opt/google/dsm/dsmparam.bin"
-        ]
-}
-
-SectionDevice."Speaker" {
-	Comment "Speaker"
-
-	Value {
-		PlaybackPCM "hw:kblr55145663max,0"
-		DspName "speaker_eq"
-	}
-}
-
-SectionDevice."Headphones" {
-	Comment "Headphones"
-
-        Value {
-                PlaybackPCM "hw:kblr55145663max,2"
-                MixerName "DAC"
-                JackDev "kbl-r5514-5663-max Headset Jack"
-
-	}
-
-	EnableSequence [
-		cset "name='Headphone Jack Switch' on"
-	]
-
-	DisableSequence [
-		cset "name='Headphone Jack Switch' off"
-	]
-}
-
-SectionDevice."Internal Mic" {
-	Comment "Internal Microphone"
-
-	Value {
-		CapturePCM "hw:kblr55145663max,4"
-		CaptureChannelMap "2 3 0 1 -1 -1 -1 -1 -1 -1 -1"
-		MixerName "ADC2"
-		DefaultNodeGain "2700"
-		CaptureChannels "4"
-	}
-
-	EnableSequence [
-		cset "name='Sto1 ADC MIXL DMIC Switch' on"
-		cset "name='Sto1 ADC MIXR DMIC Switch' on"
-		cset "name='Sto2 ADC MIXL DMIC Switch' on"
-		cset "name='Sto2 ADC MIXR DMIC Switch' on"
-	]
-
-	DisableSequence [
-		cset "name='Sto1 ADC MIXL DMIC Switch' off"
-		cset "name='Sto1 ADC MIXR DMIC Switch' off"
-		cset "name='Sto2 ADC MIXL DMIC Switch' off"
-		cset "name='Sto2 ADC MIXR DMIC Switch' off"
-	]
-}
-
-SectionDevice."Mic" {
-	Comment "Headset Microphone"
-
-	Value {
-		CapturePCM "hw:kblr55145663max,1"
-		JackDev "kbl-r5514-5663-max Headset Jack"
-	}
-
-	EnableSequence [
-		cset "name='Headset Mic Switch' on"
-	]
-
-	DisableSequence [
-		cset "name='Headset Mic Switch' off"
-	]
-}
-
-SectionDevice."HDMI1" {
-	Comment "HDMI 1"
-
-        Value {
-                PlaybackPCM "hw:kblr55145663max,6"
-                JackDev "kbl-r5514-5663-max HDMI/DP,pcm=6 Jack"
-        }
-}
-
-SectionDevice."HDMI2" {
-	Comment "HDMI 2"
-
-        Value {
-                PlaybackPCM "hw:kblr55145663max,7"
-                JackDev "kbl-r5514-5663-max HDMI/DP,pcm=7 Jack"
-        }
-}
-EOF
-```
-
-- Reboot. Hopefully audio from your speakers should work. Start with a low volume setting. It is very loud.
+- Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm`
+- After rebooting you should have audio
 
 ## Brightness
 The brightness only has two states, full or off. The backlight can be set with xrandr. To get something that felt mostly OK I used this script:
 
 - `sudo usermod -aG video $USER`
 - Add udev rules to give the video group access to modify brightness. This file will also do the same for the keyboard leds using the input group. The rest of the setup for that will be covered in the keyboard section below.
-
+- `sudo dnf install pixelbook-scripts`
 As root:
 ```
 cat << EOF > /etc/udev/rules.d/backlights.rules
@@ -217,52 +73,6 @@ ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/
 ACTION=="change", SUBSYSTEM=="leds", ENV{TRIGGER}!="none", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"
 EOF
 ```
-
-Create this script
-```
-mkdir -p ~/bin
-cat << EOF > ~/bin/backlight.sh
-#!/bin/bash
-
-max=10
-step=1
-file=/tmp/brightness
-
-case "$1" in
-    -i|--increase) ((val = +step));;
-    -d|--decrease) ((val = -step));;
-esac
-
-if !((val)); then
-    echo "Increase or decrease screen brightness"
-    echo "Usage: ${0##*/} --increase | --decrease"
-    exit
-fi
-
-if [ ! -f /tmp/brightness ]; then
-  echo 10 > /tmp/brightness
-fi
-
-read -r cur < "$file"
-((val = cur + val))
-
-if ((val <   0)); then ((val =   0)); fi
-if ((val > max)); then ((val = max)); fi
-
-printf '%d' "$val" > "$file"
-
-if [ "$val" -eq "0" ]; then
-  echo "0" > /sys/class/backlight/intel_backlight/brightness
-else
-  echo "1500" > /sys/class/backlight/intel_backlight/brightness
-fi
-
-xrandr --output eDP-1 --brightness $(echo - | awk "{ print $val / 10 }")
-EOF
-chmod +x ~/bin/backlight.sh
-```
-
-I then created keyboard shortcuts for the brightnessup and brightnessdown keys to instead run `backlight.sh --increase` and `backlight.sh --decrease` using the brightnessup and brightnessdown keys. Complete the keyboard section and reboot for this to function.
 
 ## Keyboard
 
@@ -299,30 +109,13 @@ To use the Search key as a Capslock:
 - `sudo dnf -y install xdotool`
 - Configure a keyboard shortcut for SuperL to run `xdotool key Caps_Lock`
 
-### Backlight
-For the keyboard backlight I created another script and set a shortcut up to run it when I press `ctrl+space`.
-- Ensure you set up the udev rules in the Backlight/Brightness section for the display.
-- Create the script
-```
-mkdir -p ~/bin
-cat << EOF > ~/bin/keyboard-backlight.sh
-#!/bin/bash
+### Display backlight
+Create keyboard shortcuts for the brightnessup and brightnessdown keys to instead run `/usr/bin/pixelbook-display-backlight --increase` and `/usr/bin/pixelbook-display-backlight --decrease` using the brightnessup and brightnessdown keys. Complete the keyboard section and reboot for this to function.
 
-file=/sys/class/leds/chromeos\:\:kbd_backlight/brightness
-
-read -r cur < "$file"
-
-if [ "$cur" -eq "0" ]; then
-  printf '%d' "50" > "$file"
-elif [ "$cur" -eq "100" ]; then
-  printf '%d' "0" > "$file"
-else
-  printf '%d' "100" > "$file"
-fi
-EOF
-chmod +x ~/bin/keyboard-backlight.sh
-```
+### Keyboard Backlight
+- `sudo dnf -y install pixelbook-scripts` if you haven't already
 - Add yourself to the input group: `sudo usermod -aG input $USER`
+Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
 
 ## Touchpad
 I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted.
@@ -342,59 +135,7 @@ EOF
 ```
 
 ## Touchscreen
-- Enable the COPR repo with the dependencies: `sudo dnf copr enable jmontleon/pynput`
-- Install the dependencies: `sudo dnf -y install xinput python3-evdev python3-pynput`
+- Install the dependencies: `sudo dnf -y install xinput pixebolbook-scripts` if you haven't already
 - Add yourself to the input group if you haven't already: `sudo usermod -aG input $USER`
-- Create the python script:
-```
-mkdir -p ~/bin
-cat << EOF > ~/bin/clickfix.py
-#!/bin/python3
-
-from evdev import InputDevice
-import time
-from pynput.mouse import Button, Controller
-from threading import Timer
-import subprocess
-
-dev = InputDevice('/dev/input/event4')
-m = Controller()
-lasttime = time.time()
-rlasttime = time.time()
-originaltime = lasttime
-oldclickx = 0
-oldclicky = 0
-
-
-for event in dev.read_loop():
-
-    if event.type == 3 and event.code == 47 and event.value == 1:
-        rclicktime = time.time()
-        if (rclicktime - rlasttime) < .5:
-            rlasttime = rclicktime
-        else:
-            print("Two Finger tap.")
-            subprocess.check_call(['xinput', '--disable', 'WCOM50C1:00 2D1F:5143'])
-            m.click(Button.right, 1)
-            subprocess.check_call(['xinput', '--enable', 'WCOM50C1:00 2D1F:5143'])
-            rlasttime = rclicktime
-
-    elif event.type == 1 and event.code == 330 and event.value == 1:
-        clicktime = time.time()
-        clickx, clicky = m.position
-        if (clicktime - lasttime) < .5 and (abs(clickx - oldclickx) < 20) and (abs(clicky - oldclicky) < 20):
-            print("Double click.")
-            subprocess.check_call(['xinput', '--disable', 'WCOM50C1:00 2D1F:5143'])
-            m.click(Button.left, 2)
-            subprocess.check_call(['xinput', '--enable', 'WCOM50C1:00 2D1F:5143'])
-            lasttime = originaltime
-        else:
-            lasttime = clicktime
-        oldclickx = clickx
-        oldclicky = clicky
-EOF
-chmod +x ~/bin/clickfix.py
-```
-
-- Configure the script to autostart at login.
+- Configure `/usr/bin/pixelbook-touchscreen-click` to run automatically at login 
 - Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
