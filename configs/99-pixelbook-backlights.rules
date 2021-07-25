@@ -1,0 +1,5 @@
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+
+ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"
+ACTION=="change", SUBSYSTEM=="leds", ENV{TRIGGER}!="none", RUN+="/bin/chgrp -R input /sys%p", RUN+="/bin/chmod -R g+w /sys%p"

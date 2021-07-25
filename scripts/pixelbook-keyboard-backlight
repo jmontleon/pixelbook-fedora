@@ -1,0 +1,13 @@
+#!/bin/bash
+
+file=/sys/class/leds/chromeos\:\:kbd_backlight/brightness
+
+read -r cur < "$file"
+
+if [ "$cur" -eq "0" ]; then
+  printf '%d' "50" > "$file"
+elif [ "$cur" -eq "100" ]; then
+  printf '%d' "0" > "$file"
+else 
+  printf '%d' "100" > "$file"
+fi

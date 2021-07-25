@@ -1,0 +1,37 @@
+#!/bin/bash
+
+max=10
+step=1
+file=/tmp/brightness
+
+case "$1" in
+    -i|--increase) ((val = +step));;
+    -d|--decrease) ((val = -step));;
+esac
+
+if !((val)); then
+    echo "Increase or decrease screen brightness"
+    echo "Usage: ${0##*/} --increase | --decrease"
+    exit
+fi
+
+if [ ! -f /tmp/brightness ]; then 
+  echo 10 > /tmp/brightness
+fi
+
+read -r cur < "$file"
+((val = cur + val))
+
+if ((val <   0)); then ((val =   0)); fi
+if ((val > max)); then ((val = max)); fi
+
+printf '%d' "$val" > "$file"
+echo "$val"
+
+if [ "$val" -eq "0" ]; then
+  echo "0" > /sys/class/backlight/intel_backlight/brightness
+else
+  echo "1500" > /sys/class/backlight/intel_backlight/brightness
+fi
+
+xrandr --output eDP-1 --brightness $(echo - | awk "{ print $val / 10 }")
