@@ -63,7 +63,7 @@ The brightness only has two states, full or off. The backlight can be set with x
 
 - `sudo usermod -aG video $USER`
 - Add udev rules to give the video group access to modify brightness. This file will also do the same for the keyboard leds using the input group. The rest of the setup for that will be covered in the keyboard section below.
-- `sudo dnf install pixelbook-scripts`
+- `sudo dnf install pixelbook-scripts`  
 As root:
 ```
 cat << EOF > /etc/udev/rules.d/backlights.rules
