@@ -59,7 +59,7 @@ What works and doesn't work:
 - After rebooting you should have audio
 
 ## Brightness
-The brightness only has two states, full or off. The backlight can be set with xrandr. To get something that felt mostly OK I used this script:
+The brightness only has two states, full or off. The backlight can be set with xrandr. To get something resembling brightness adustment we'll start in this section and finish up in the keyboard section.
 
 - `sudo usermod -aG video $USER`
 - Add udev rules to give the video group access to modify brightness. This file will also do the same for the keyboard leds using the input group. The rest of the setup for that will be covered in the keyboard section below.
@@ -136,7 +136,7 @@ EOF
 ```
 
 ## Touchscreen
-- Install the dependencies: `sudo dnf -y install xinput pixebolbook-scripts` if you haven't already
+- Install the dependencies: `sudo dnf -y install pixebolbook-scripts` if you haven't already
 - Add yourself to the input group if you haven't already: `sudo usermod -aG input $USER`
 - Configure `/usr/bin/pixelbook-touchscreen-click` to run automatically at login 
 - Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
