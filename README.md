@@ -52,7 +52,7 @@ What works and doesn't work:
   - `sudo cp /mnt/lib/firmware/dsp_lib_dsm_core_spt_release.bin /lib/firmware/`
   - `sudo cp /mnt/lib/firmware/intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin /lib/firmware/intel`
   - `sudo cp /mnt//opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin`
-- Replace pipewire with pulseaudio, otherwise the mic produces only noise `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`
+- Replace pipewire with pulseaudio, otherwise the mic produces only noise `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`. [Pipeiwire Issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452)
 - As root:
 ```
 cat << EOF > /usr/share/alsa/ucm2/kbl-r5514-5663-/kbl-r5514-5663-.conf
