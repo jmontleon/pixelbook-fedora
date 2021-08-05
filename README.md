@@ -67,7 +67,12 @@ The brightness only has two states, full or off. The backlight can be set with x
 ## Keyboard
 
 ### Hotkeys
-- `sudo dnf -y install pixelbook-keyboard-hotkeys`
+- `sudo dnf -y install pixelbook-udev` if you haven't already
+
+### Screen Orientation
+- `sudo dnf -y install pixelbook-udev` if you haven't already
+- `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
+- reboot
 
 ### Capslock
 To use the Search key as a Capslock:

@@ -1,0 +1,2 @@
+sensor:modalias:platform:cros-ec-accel:dmi:bvncoreboot:bvrMrChromebox-*:*:*:efr0.0:svnGoogle:pnEve*:*
+ ACCEL_MOUNT_MATRIX=-1, 0, 0; 0, -1, 0; 0, 0, -1
