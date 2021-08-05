@@ -73,6 +73,7 @@ The brightness only has two states, full or off. The backlight can be set with x
 - `sudo dnf -y install pixelbook-udev` if you haven't already
 - `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
 - reboot
+- Gnome handles orientation automatically. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to autostart. 
 
 ### Capslock
 To use the Search key as a Capslock:
