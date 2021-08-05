@@ -5,7 +5,7 @@
 # "Assistant" and "Hamburger" keys.
 #
 evdev:atkbd:dmi:bvn*:bvr*:bd*:svnGoogle:pnEve:pvr*
-# KEYBOARD_KEY_5d=controlpanel
+ KEYBOARD_KEY_5d=delete
  KEYBOARD_KEY_d8=rightmeta
  KEYBOARD_KEY_db=leftmeta
  KEYBOARD_KEY_3b=back
