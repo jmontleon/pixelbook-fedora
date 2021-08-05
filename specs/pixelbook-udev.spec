@@ -1,6 +1,6 @@
 Name:       pixelbook-udev
 Version:    1.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 License:    BSD
 Summary:    udev rules for Pixelbook backlights, sensors, and keyboard
 Source0:    99-pixelbook-backlights.rules 
@@ -10,7 +10,7 @@ BuildArch:  noarch
 
 Requires: systemd-udev
 
-Obsoletes: pixelbook-keyboard
+Obsoletes: pixelbook-keyboard-hotkeys
 
 %description
 udev rules for Pixelbook backlights, sensors, and keyboard.
@@ -42,6 +42,9 @@ systemd-hwdb update
 udevadm control --reload-rules
 
 %changelog
+* Thu Aug 05 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.1-2
+- Fix package obsoletes
+
 * Thu Aug 05 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.1-1
 - Add sensor hwdb config
 - Move keyboard udev rule here and obsolete package
