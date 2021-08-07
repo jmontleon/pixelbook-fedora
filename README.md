@@ -12,8 +12,8 @@ What works and doesn't work:
 | Bluetooth | Working |
 | Camera | Working |
 | Keyboard | [Working](#Keyboard) |
+| Orientation / Tablet Mode | [Working](#Orientation) |
 | Sleep | Working |
-| Tablet Mode / Orientation | [Working](#Orientation) |
 | Touchpad | [Working](#Touchpad) |
 | Touchscreen | [Working](#Touchscreen) |
 | Wireless | Working |
