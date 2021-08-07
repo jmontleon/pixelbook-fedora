@@ -1,5 +1,5 @@
 Name:       pixelbook-scripts
-Version:    1.0.1
+Version:    1.0.2
 Release:    1%{?dist}
 Summary:    Scripts for interacting with pixelbook backlights and touchpad
 License:    WTFPL
@@ -33,6 +33,9 @@ install -m 0755 %{SOURCE3} %{buildroot}%{_bindir}/
 /usr/bin/*
 
 %changelog
+* Sat Aug 07 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.2-1
+- Improve display orientation script
+
 * Thu Aug 05 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.1-1
 - Add display orientation script
 
