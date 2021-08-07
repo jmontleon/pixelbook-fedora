@@ -8,11 +8,12 @@ What works and doesn't work:
 | ------------- |-------------|
 | Ambient Light Sensor | Working |
 | Audio | [Working](#Audio) |
-| Backlight / Brightness | [Working](#Brightness) |
+| Brightness | [Working](#Brightness) |
 | Bluetooth | Working |
 | Camera | Working |
 | Keyboard | [Working](#Keyboard) |
 | Sleep | Working |
+| Tablet Mode / Orientation | [Working](#Orientation) |
 | Touchpad | [Working](#Touchpad) |
 | Touchscreen | [Working](#Touchscreen) |
 | Wireless | Working |
@@ -71,16 +72,6 @@ What works and doesn't work:
 ### Hotkeys
 1. `sudo dnf -y install pixelbook-udev` if you haven't already
 
-### Screen Orientation
-1. `sudo dnf -y install pixelbook-udev pixelbook-scripts` if you haven't already
-1. `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
-1. `sudo systemctl enable acpid`
-1. Gnome handles screen orientation automatically.
-1. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to start at login. 
-1. The touchpad is not currently turning off automatically as it should, but we can monitor tablet mode with acpid and do it ourselves.
-1. Set up a `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login. This is required for Gnome as well.
-1. reboot
-
 ### Capslock
 To use the Search key as a Capslock:
 1. `sudo dnf -y install xdotool`
@@ -90,6 +81,16 @@ To use the Search key as a Capslock:
 1. `sudo dnf -y install pixelbook-scripts` if you haven't already
 1. Add yourself to the input group: `sudo usermod -aG input $USER`
 1. Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
+
+## Orientation
+1. `sudo dnf -y install pixelbook-udev pixelbook-scripts` if you haven't already
+1. `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
+1. `sudo systemctl enable acpid`
+1. Gnome handles screen orientation automatically.
+1. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to start at login. 
+1. The touchpad is not currently turning off automatically as it should, but we can monitor tablet mode with acpid and do it ourselves.
+1. Set up a `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login. This is required for Gnome as well.
+1. reboot
 
 ## Touchpad
 I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted. With Gnome you can do both from the control center, I believe. 
