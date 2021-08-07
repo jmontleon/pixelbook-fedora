@@ -60,7 +60,7 @@ What works and doesn't work:
 1. After rebooting you should have audio
 
 ## Brightness
-1. `sudo dnf install pixelbook-udev && sudo dnf -y update`. Make sure you get a kernel with `pixelbook` in the release. If not I've been slacking.
+1. `sudo dnf install pixelbook-udev && sudo dnf -y update`. Make sure you get a kernel with `pixelbook` in the release.
 1. Create `/etc/modprobe.d/i915.conf` with one line: `options i915 enable_dpcd_backlight=1`
 1. `sudo dracut -f`
 
