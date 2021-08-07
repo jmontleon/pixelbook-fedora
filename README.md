@@ -83,9 +83,6 @@ To use the Search key as a Capslock:
 - `sudo dnf -y install xdotool`
 - Configure a keyboard shortcut for SuperL to run `xdotool key Caps_Lock`
 
-### Display backlight
-Create keyboard shortcuts for the brightnessup and brightnessdown keys to instead run `/usr/bin/pixelbook-display-backlight --increase` and `/usr/bin/pixelbook-display-backlight --decrease` using the brightnessup and brightnessdown keys. Complete the keyboard section and reboot for this to function.
-
 ### Keyboard Backlight
 - `sudo dnf -y install pixelbook-scripts` if you haven't already
 - Add yourself to the input group: `sudo usermod -aG input $USER`
