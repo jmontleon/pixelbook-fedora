@@ -1,14 +1,16 @@
 Name:       pixelbook-scripts
-Version:    1.0.2
+Version:    1.0.3
 Release:    1%{?dist}
 Summary:    Scripts for interacting with pixelbook backlights and touchpad
 License:    WTFPL
 Source0:    pixelbook-display-backlight
-Source3:    pixelbook-display-orientation
 Source1:    pixelbook-keyboard-backlight
 Source2:    pixelbook-touchscreen-click
+Source3:    pixelbook-display-orientation
+Source4:    pixelbook-touchscreen-click
 BuildArch:  noarch
 
+Requires: acpid
 Requires: iio-sensor-proxy
 Requires: inotify-tools
 Requires: python3-pynput
@@ -27,12 +29,17 @@ install -m 0755 %{SOURCE0} %{buildroot}%{_bindir}/
 install -m 0755 %{SOURCE1} %{buildroot}%{_bindir}/
 install -m 0755 %{SOURCE2} %{buildroot}%{_bindir}/
 install -m 0755 %{SOURCE3} %{buildroot}%{_bindir}/
+install -m 0755 %{SOURCE4} %{buildroot}%{_bindir}/
 %check
 
 %files
 /usr/bin/*
 
 %changelog
+* Sat Aug 07 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.3-1
+- Add script to control touchpad tablet mode
+- Try to improve reliability of touchscreen click script
+
 * Sat Aug 07 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.2-1
 - Improve display orientation script
 

@@ -60,9 +60,9 @@ What works and doesn't work:
 - After rebooting you should have audio
 
 ## Brightness
-- `sudo dnf install pixelbook-udev && sudo dnf -y update`
-
-Make sure you get a kernel with `pixelbook` in the release. If not I've been slacking.
+- `sudo dnf install pixelbook-udev && sudo dnf -y update`. Make sure you get a kernel with `pixelbook` in the release. If not I've been slacking.
+- Create `/etc/modprobe.d/i915.conf` with one line: `options i915 enable_dpcd_backlight=1`
+- `sudo dracut -f`
 
 ## Keyboard
 
@@ -70,10 +70,13 @@ Make sure you get a kernel with `pixelbook` in the release. If not I've been sla
 - `sudo dnf -y install pixelbook-udev` if you haven't already
 
 ### Screen Orientation
-- `sudo dnf -y install pixelbook-udev` if you haven't already
+- `sudo dnf -y install pixelbook-udev pixelbook-scripts` if you haven't already
 - `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
+- `sudo systemctl enable acpid`
 - reboot
 - Gnome handles orientation automatically. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to autostart. 
+- The touchpad is not currently turning off automatically as it should, but we can monitor tablet mode with acpid and do it ourselves.
+- Set up a `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login.
 
 ### Capslock
 To use the Search key as a Capslock:
