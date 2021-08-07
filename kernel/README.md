@@ -1,6 +1,6 @@
 # Kernel
-Kernel SRPMS are too large to upload to githubm but they are available from Copr. With the Copr repo enabled you can download the latest kernel SRPM with `sudo dnf download --source kernel`
-
+- Kernel SRPMS are too large to upload to github but they are available from Copr. 
+- With the Copr repo enabled you can download the latest with `sudo dnf download --source kernel`
 
 There are only a few changes involved for making these:
 1. Added a populated kernel-local with the chromeos / cros_ec modules enabled
