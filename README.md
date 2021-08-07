@@ -86,7 +86,7 @@ To use the Search key as a Capslock:
 1. `sudo dnf -y install xdotool`
 1. Configure a keyboard shortcut for SuperL to run `xdotool key Caps_Lock`
 
-### Keyboard Backlight
+### Backlight
 1. `sudo dnf -y install pixelbook-scripts` if you haven't already
 1. Add yourself to the input group: `sudo usermod -aG input $USER`
 1. Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
