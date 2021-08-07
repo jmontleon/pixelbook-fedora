@@ -73,10 +73,10 @@ What works and doesn't work:
 - `sudo dnf -y install pixelbook-udev pixelbook-scripts` if you haven't already
 - `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
 - `sudo systemctl enable acpid`
-- reboot
-- Gnome handles orientation automatically. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to autostart. 
+- Gnome handles orientation automatically. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to start at login. 
 - The touchpad is not currently turning off automatically as it should, but we can monitor tablet mode with acpid and do it ourselves.
-- Set up a `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login.
+- Set up a `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login. This is required for Gnome as well.
+- reboot
 
 ### Capslock
 To use the Search key as a Capslock:
