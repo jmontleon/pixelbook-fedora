@@ -6,8 +6,9 @@ What works and doesn't work:
 
 | Component     | Status      |
 | ------------- |-------------|
+| Ambient Light Sensor | Working |
 | Audio | [Working](#Audio) |
-| Backlight / Brightness | [Poor](#Brightness) |
+| Backlight / Brightness | [Working](#Brightness) |
 | Bluetooth | Working |
 | Camera | Working |
 | Keyboard | [Working](#Keyboard) |
@@ -59,10 +60,9 @@ What works and doesn't work:
 - After rebooting you should have audio
 
 ## Brightness
-The brightness only has two states, full or off. The backlight can be set with xrandr. To get something resembling brightness adustment we'll start in this section and finish up in the keyboard section.
+- `sudo dnf install pixelbook-udev && sudo dnf -y update`
 
-- `sudo usermod -aG video $USER`
-- `sudo dnf install pixelbook-scripts pixelbook-udev`  
+Make sure you get a kernel with `pixelbook` in the release. If not I've been slacking.
 
 ## Keyboard
 
