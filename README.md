@@ -90,7 +90,7 @@ To use the Search key as a Capslock:
 1. Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
 
 ## Touchpad
-I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted. 
+I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted. With Gnome you can do both from the control center, I believe. 
 
 1. If you want the same tweak run `sudo dnf -y install pixelbook-touchpad-tweak`
 
