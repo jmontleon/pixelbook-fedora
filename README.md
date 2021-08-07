@@ -55,7 +55,7 @@ What works and doesn't work:
   1. `sudo cp /mnt/lib/firmware/intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin /lib/firmware/intel`
   1. `sudo mkdir -p /opt/google/dsm/`
   1. `sudo cp /mnt/opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin`
-1. Replace pipewire with pulseaudio, otherwise the mic produces only noise `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`. [Pipeiwire Issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452)
+1. Replace pipewire with pulseaudio, to fix a mic noise issue `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`. [Pipeiwire Issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452)
 1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm`
 1. After rebooting you should have audio
 
