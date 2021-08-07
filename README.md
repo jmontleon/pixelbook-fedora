@@ -40,8 +40,9 @@ What works and doesn't work:
 ## Install Fedora
 1. Prepare a bootable [Fedora USB stick](https://fedoramagazine.org/make-fedora-usb-stick/)
 1. Insert it into the Pixelbook and install it normally.
-1. `sudo dnf -y copr enable jmontleon/pixelbook && sudo dnf -y update`
+1. `sudo dnf -y copr enable jmontleon/pixelbook`
 1. `sudo dnf config-manager --setopt 'copr:copr.fedorainfracloud.org:jmontleon:pixelbook.priority=98' --save`
+1. `sudo dnf -y update`
 
 ## Audio
 1. By default audio will not work at all.
