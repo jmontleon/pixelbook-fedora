@@ -87,7 +87,7 @@ To use the Search key as a Capslock:
 ### Keyboard Backlight
 1. `sudo dnf -y install pixelbook-scripts` if you haven't already
 1. Add yourself to the input group: `sudo usermod -aG input $USER`
-Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
+1. Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
 
 ## Touchpad
 I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted. 
