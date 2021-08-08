@@ -116,7 +116,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.13
 
-%define rpmversion 5.13.8
+%define rpmversion 5.13.9
 %define stableversion 5.13
 %define pkgrelease 200
 
@@ -124,7 +124,7 @@ Summary: The Linux kernel
 %define patchlevel 13
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 205.pixelbook%{?buildid}%{?dist}
+%define specrelease 201.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -646,7 +646,7 @@ BuildRequires: clang
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.13.8.tar.xz
+Source0: linux-5.13.9.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -798,12 +798,10 @@ Source4001: rpminspect.yaml
 
 ## Patches needed for building this package
 Patch0: reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
-
 %if !%{nopatches}
 
 Patch1: patch-%{stableversion}-redhat.patch
 %endif
-
 
 # empty final patch to facilitate testing of kernel patches
 Patch999999: linux-kernel-test.patch
@@ -1317,8 +1315,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.13.8 -c
-mv linux-5.13.8 linux-%{KVERREL}
+%setup -q -n kernel-5.13.9 -c
+mv linux-5.13.9 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2888,11 +2886,27 @@ fi
 #
 #
 %changelog
-* Wed Aug 04 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.13.8-200]
+* Sun Aug 08 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.13.9-200]
+- kernel-5.13.9-0 (Justin M. Forbes)
+- drm/i915/dp: Use max params for older panels (Kai-Heng Feng)
+- pinctrl: tigerlake: Fix GPIO mapping for newer version of software (Andy Shevchenko)
+
+* Wed Aug 04 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.13.8-0]
 - Re-enable sermouse for x86 (rhbz 1974002) (Justin M. Forbes)
 - Revert CRYPTO_ECDH and CRYPTO_ECDA from builtin to module to fix fips (Justin M. Forbes)
 - drm/rockchip: remove existing generic drivers to take over the device (Javier Martinez Canillas)
 - powerpc/pseries: Fix regression while building external modules (Srikar Dronamraju)
+- kernel-5.13.7-0 (Justin M. Forbes)
+- kernel-5.13.6-0 (Justin M. Forbes)
+- kernel-5.13.5-0 (Justin M. Forbes)
+- iwlwifi Add support for ax201 in Samsung Galaxy Book Flex2 Alpha (Justin M. Forbes)
+- Revert "usb: renesas-xhci: Fix handling of unknown ROM state" (Justin M. Forbes)
+- RHEL configs need this too (Justin M. Forbes)
+- kernel-5.13.4-0 (Justin M. Forbes)
+- Config update for 5.13.4 (Justin M. Forbes)
+- kernel-5.13.3-0 (Justin M. Forbes)
+- Don't tag a release as [redhat] (Justin M. Forbes)
+- platform/x86: amd-pmc: Fix missing unlock on error in amd_pmc_send_cmd() (Yang Yingliang)
 
 * Sat Jul 31 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.13.7-0]
 - kernel-5.13.6-0 (Justin M. Forbes)
