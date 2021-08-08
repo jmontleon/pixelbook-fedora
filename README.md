@@ -46,8 +46,8 @@ What works and doesn't work:
 1. `sudo dnf -y update`
 
 ## Audio
-1. By default audio will not work at all.
-1. To enable it we need to copy some files off a recovery image. With some additional fixes the Internal mic will work as well.
+By default audio will not work at all, but by copying topology and firmware files from a recovery image the speakers will work. With some additional configuration the microphone, headphone jack, and possibly other aspects work as well.
+
 1. Download the latest eve recovery image from [cros-updates-serving.appspot.com](https://cros-updates-serving.appspot.com/)
 1. Unzip the file. As an example `unzip chromeos_13904.55.0_eve_recovery_stable-channel_mp-v2.bin.zip`
 1. Create device maps `sudo kpartx -av chromeos_13904.55.0_eve_recovery_stable-channel_mp-v2.bin`
@@ -63,14 +63,15 @@ What works and doesn't work:
 1. After rebooting you should have audio
 
 ## Brightness
-1. `sudo dnf install pixelbook-udev && sudo dnf -y update`. Make sure you get a kernel with `pixelbook` in the release.
+1. `sudo dnf install pixelbook-udev && sudo dnf -y update`, if you haven't already.
 1. Create `/etc/modprobe.d/i915.conf` with one line: `options i915 enable_dpcd_backlight=1`
 1. `sudo dracut -f`
+1. After rebooting the backlight should work.
 
 ## Keyboard
 
 ### Hotkeys
-1. `sudo dnf -y install pixelbook-udev` if you haven't already
+1. `sudo dnf -y install pixelbook-udev`, if you haven't already.
 
 ### Capslock
 To use the Search key as a Capslock:
@@ -78,27 +79,26 @@ To use the Search key as a Capslock:
 1. Configure a keyboard shortcut for SuperL to run `xdotool key Caps_Lock`
 
 ### Backlight
-1. `sudo dnf -y install pixelbook-scripts` if you haven't already
+1. `sudo dnf -y install pixelbook-scripts`
 1. Add yourself to the input group: `sudo usermod -aG input $USER`
 1. Set up a keyboard shortcut up to run `/usr/bin/pixelbook-keyboard-backlight` when you press `ctrl+space`.
 
 ## Orientation
-1. `sudo dnf -y install pixelbook-udev pixelbook-scripts` if you haven't already
-1. `sudo dnf -y update kernel` to get a pixelbook kernel with the sensor modules enabled.
+1. `sudo dnf -y install pixelbook-udev pixelbook-scripts`, if you haven't already.
+1. `sudo dnf -y update`, if you haven't already.
 1. `sudo systemctl enable acpid`
 1. Gnome handles screen orientation automatically.
-1. For others a script `pixelbook-display-orientation` is available in the `pixelbook-scripts` package that can be set to start at login. 
-1. The touchpad is not currently turning off automatically as it should, but we can monitor tablet mode with acpid and do it ourselves.
-1. Set up a `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login. This is required for Gnome as well.
-1. reboot
+1. For others a script, `pixelbook-display-orientation`, is available that can be set to start at login. 
+1. Set up `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login to work around the touchpad not turning off automatically in tablet mode in all DE, including Gnome.
+1. After rebooting screen orientation should work.
 
 ## Touchpad
-I like Tapping to click and no tapping to drag. While this can be enabled in the Xfce touchpad settings I was unable to disable tapping to drag. To disable it I created an xorg.conf file as root and rebooted. With Gnome you can do both from the control center, I believe. 
+I like Tapping to click and no tapping to drag. While tap to click can be enabled in the Xfce touchpad settings I was unable to disable tap to drag. To disable it I created an xorg.conf file as root and rebooted. With Gnome you can do both from the control center, I believe. 
 
 1. If you want the same tweak run `sudo dnf -y install pixelbook-touchpad-tweak`
 
 ## Touchscreen
-1. Install the dependencies: `sudo dnf -y install pixebolbook-scripts` if you haven't already
-1. Add yourself to the input group if you haven't already: `sudo usermod -aG input $USER`
+1. `sudo dnf -y install pixebolbook-scripts`, if you haven't already.
+1. `sudo usermod -aG input $USER`, if you haven't already
 1. Configure `/usr/bin/pixelbook-touchscreen-click` to run automatically at login 
 1. Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
