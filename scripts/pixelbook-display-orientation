@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-monitor-sensor > /tmp/sensor.log 2>&1 &
+monitor-sensor --accel > /tmp/sensor.log 2>&1 &
 
 while inotifywait -e modify /tmp/sensor.log; do
   ORIENTATION=$(tail -n 1 /tmp/sensor.log | grep 'orientation' | grep -oE '[^ ]+$')

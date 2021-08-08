@@ -13,7 +13,7 @@ What works and doesn't work:
 | Camera | Working |
 | Keyboard | [Working](#Keyboard) |
 | Orientation / Tablet Mode | [Working](#Orientation) |
-| Sleep | Working |
+| Suspend | Working |
 | Touchpad | [Working](#Touchpad) |
 | Touchscreen | [Working](#Touchscreen) |
 | Wireless | Working |
@@ -93,9 +93,13 @@ To use the Search key as a Capslock:
 1. After rebooting screen orientation should work.
 
 ## Touchpad
-I like Tapping to click and no tapping to drag. While tap to click can be enabled in the Xfce touchpad settings I was unable to disable tap to drag. To disable it I created an xorg.conf file as root and rebooted. With Gnome you can do both from the control center, I believe. 
+If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To disable Tap to Drag you can do one of the following.
 
-1. If you want the same tweak run `sudo dnf -y install pixelbook-touchpad-tweak`
+### Gnome:
+1. `gsettings set org.gnome.desktop.peripherals.touchpad tap-and-drag false`
+
+### Xfce
+1. `sudo dnf -y install pixelbook-touchpad-tweak`
 
 ## Touchscreen
 1. `sudo dnf -y install pixebolbook-scripts`, if you haven't already.

@@ -1,5 +1,5 @@
 Name:       pixelbook-scripts
-Version:    1.0.3
+Version:    1.0.4
 Release:    1%{?dist}
 Summary:    Scripts for interacting with pixelbook backlights and touchpad
 License:    WTFPL
@@ -36,6 +36,9 @@ install -m 0755 %{SOURCE4} %{buildroot}%{_bindir}/
 /usr/bin/*
 
 %changelog
+* Sun Aug 08 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.4-1
+- Update orientation script to only monitor accel sensor
+
 * Sat Aug 07 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.3-1
 - Add script to control touchpad tablet mode
 - Try to improve reliability of touchscreen click script
