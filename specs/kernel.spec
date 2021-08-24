@@ -80,7 +80,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 0.rc6.46
+%global distro_build 0.rc7.54
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -124,13 +124,13 @@ Summary: The Linux kernel
 %define kversion 5.14
 
 %define rpmversion 5.14.0
-%define pkgrelease 0.rc6.46
+%define pkgrelease 0.rc7.54
 
 # This is needed to do merge window version magic
 %define patchlevel 14
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 1.pixelbook.rc6.46%{?buildid}%{?dist}
+%define specrelease 1.pixelbook.rc7.54%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -671,7 +671,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.14-rc6.tar.xz
+Source0: linux-5.14-rc7.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -690,26 +690,21 @@ Source9: x509.genkey.fedora
 %if %{?released_kernel}
 
 Source10: redhatsecurebootca5.cer
-Source11: redhatsecurebootca1.cer
-Source12: redhatsecureboot501.cer
-Source13: redhatsecureboot301.cer
-Source14: secureboot_s390.cer
-Source15: secureboot_ppc.cer
+Source11: redhatsecureboot501.cer
+Source12: secureboot_s390.cer
+Source13: secureboot_ppc.cer
 
-%define secureboot_ca_1 %{SOURCE10}
-%define secureboot_ca_0 %{SOURCE11}
+%define secureboot_ca_0 %{SOURCE10}
 %ifarch x86_64 aarch64
-%define secureboot_key_1 %{SOURCE12}
-%define pesign_name_1 redhatsecureboot501
-%define secureboot_key_0 %{SOURCE13}
-%define pesign_name_0 redhatsecureboot301
+%define secureboot_key_0 %{SOURCE11}
+%define pesign_name_0 redhatsecureboot501
 %endif
 %ifarch s390x
-%define secureboot_key_0 %{SOURCE14}
+%define secureboot_key_0 %{SOURCE12}
 %define pesign_name_0 redhatsecureboot302
 %endif
 %ifarch ppc64le
-%define secureboot_key_0 %{SOURCE15}
+%define secureboot_key_0 %{SOURCE13}
 %define pesign_name_0 redhatsecureboot303
 %endif
 
@@ -717,16 +712,11 @@ Source15: secureboot_ppc.cer
 %else
 
 Source10: redhatsecurebootca4.cer
-Source11: redhatsecurebootca2.cer
-Source12: redhatsecureboot401.cer
-Source13: redhatsecureboot003.cer
+Source11: redhatsecureboot401.cer
 
-%define secureboot_ca_1 %{SOURCE10}
-%define secureboot_ca_0 %{SOURCE11}
-%define secureboot_key_1 %{SOURCE12}
-%define pesign_name_1 redhatsecureboot401
-%define secureboot_key_0 %{SOURCE13}
-%define pesign_name_0 redhatsecureboot003
+%define secureboot_ca_0 %{SOURCE10}
+%define secureboot_key_0 %{SOURCE11}
+%define pesign_name_0 redhatsecureboot401
 
 # released_kernel
 %endif
@@ -1357,8 +1347,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.14-rc6 -c
-mv linux-5.14-rc6 linux-%{KVERREL}
+%setup -q -n kernel-5.14-rc7 -c
+mv linux-5.14-rc7 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -1630,9 +1620,7 @@ BuildKernel() {
     fi
 
     %ifarch x86_64 aarch64
-    %pesign -s -i $SignImage -o vmlinuz.tmp -a %{secureboot_ca_0} -c %{secureboot_key_0} -n %{pesign_name_0}
-    %pesign -s -i vmlinuz.tmp -o vmlinuz.signed -a %{secureboot_ca_1} -c %{secureboot_key_1} -n %{pesign_name_1}
-    rm vmlinuz.tmp
+    %pesign -s -i $SignImage -o vmlinuz.signed -a %{secureboot_ca_0} -c %{secureboot_key_0} -n %{pesign_name_0}
     %endif
     %ifarch s390x ppc64le
     if [ -x /usr/bin/rpm-sign ]; then
@@ -2097,13 +2085,7 @@ BuildKernel() {
 
     # Red Hat UEFI Secure Boot CA cert, which can be used to authenticate the kernel
     mkdir -p $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer
-    %ifarch x86_64 aarch64
-       install -m 0644 %{secureboot_ca_0} $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/kernel-signing-ca-20200609.cer
-       install -m 0644 %{secureboot_ca_1} $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/kernel-signing-ca-20140212.cer
-       ln -s kernel-signing-ca-20200609.cer $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/kernel-signing-ca.cer
-    %else
-       install -m 0644 %{secureboot_ca_0} $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/kernel-signing-ca.cer
-    %endif
+    install -m 0644 %{secureboot_ca_0} $RPM_BUILD_ROOT%{_datadir}/doc/kernel-keys/$KernelVer/kernel-signing-ca.cer
     %ifarch s390x ppc64le
     if [ $DoModules -eq 1 ]; then
 	if [ -x /usr/bin/rpm-sign ]; then
@@ -2647,7 +2629,7 @@ then\
     %{_sbindir}/weak-modules --add-kernel %{KVERREL}%{?1:+%{1}} || exit $?\
 fi\
 %endif\
-/bin/kernel-install add %{KVERREL}%{?1:+%{1}} /lib/modules/%{KVERREL}%{?1:+%{1}}/vmlinuz || exit $?\
+/bin/kernel-install -v add %{KVERREL}%{?1:+%{1}} /lib/modules/%{KVERREL}%{?1:+%{1}}/vmlinuz || exit $?\
 %{nil}
 
 #
@@ -2952,6 +2934,37 @@ fi
 #
 #
 %changelog
+* Mon Aug 23 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc7.54]
+- redhat: drop certificates that were deprecated after GRUB's BootHole flaw (Herton R. Krzesinski) [1994849]
+
+* Sat Aug 21 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc6.20210821gitfa54d366a6e4.51]
+- More Fedora config updates (Justin M. Forbes)
+
+* Fri Aug 20 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc6.20210820gitd992fe5318d8.50]
+- Fedora config updates for 5.14 (Justin M. Forbes)
+
+* Thu Aug 19 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc6.20210819gitd6d09a694205.49]
+- CI: Rename ARK CI pipeline type (Veronika Kabatova)
+- CI: Finish up c9s config (Veronika Kabatova)
+- CI: Update ppc64le config (Veronika Kabatova)
+- CI: use more templates (Veronika Kabatova)
+
+* Wed Aug 18 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc6.20210818git614cb2751d31.48]
+- Filter updates for aarch64 (Justin M. Forbes)
+- increase CONFIG_NODES_SHIFT for aarch64 (Chris von Recklinghausen) [1890304]
+
+* Tue Aug 17 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc6.20210817git794c7931a242.47]
+- Revert "redhat: ark: disable CONFIG_NET_SCH_MULTIQ" (Marcelo Ricardo Leitner)
+- redhat: configs: Enable CONFIG_WIRELESS_HOTKEY (Hans de Goede)
+- redhat/configs: Update CONFIG_NVRAM (Desnes A. Nunes do Rosario) [1988254]
+- common: serial: build in SERIAL_8250_LPSS for x86 (Peter Robinson)
+- powerpc: enable CONFIG_FUNCTION_PROFILER (Diego Domingos) [1831065]
+- crypto: rng - Override drivers/char/random in FIPS mode (Herbert Xu)
+- random: Add hook to override device reads and getrandom(2) (Herbert Xu)
+- redhat/configs: Disable Soft-RoCE driver (Kamal Heib)
+- filter-modules.sh: add more sound modules to filter (Jaroslav Kysela)
+- redhat/configs: sound configuration cleanups and updates (Jaroslav Kysela)
+
 * Fri Aug 13 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.14.0-0.rc5.20210813gitf8e6dfc64f61.45]
 - update filters for Fedora (Justin M. Forbes)
 
