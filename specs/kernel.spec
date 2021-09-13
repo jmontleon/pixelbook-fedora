@@ -123,7 +123,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.14
 
-%define rpmversion 5.14.2
+%define rpmversion 5.14.3
 %define patchversion 5.14
 %define pkgrelease 300
 
@@ -672,7 +672,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.14.2.tar.xz
+Source0: linux-5.14.3.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1358,8 +1358,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.14.2 -c
-mv linux-5.14.2 linux-%{KVERREL}
+%setup -q -n kernel-5.14.3 -c
+mv linux-5.14.3 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2958,10 +2958,13 @@ fi
 #
 #
 %changelog
-* Wed Sep 08 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.2-0]
+* Sun Sep 12 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.3-300]
+- Linux v5.14.3
+
+* Wed Sep 08 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.2-300]
 - Revert "team: mark team driver as deprecated" (Justin M. Forbes)
 
-* Fri Sep 03 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.1-0]
+* Fri Sep 03 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.1-300]
 - Setup for building fedora-5.14 branch (Justin M. Forbes)
 
 * Mon Aug 30 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14-0]
