@@ -123,7 +123,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.14
 
-%define rpmversion 5.14.7
+%define rpmversion 5.14.8
 %define patchversion 5.14
 %define pkgrelease 300
 
@@ -672,7 +672,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.14.7.tar.xz
+Source0: linux-5.14.8.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1358,8 +1358,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.14.7 -c
-mv linux-5.14.7 linux-%{KVERREL}
+%setup -q -n kernel-5.14.8 -c
+mv linux-5.14.8 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2958,6 +2958,9 @@ fi
 #
 #
 %changelog
+* Mon Sep 27 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.8-0]
+- thermal/drivers/int340x: Do not set a wrong tcc offset on resume (Antoine Tenart)
+
 * Wed Sep 22 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.7-0]
 - Add Fedora 34 and 33 to release_targets (Justin M. Forbes)
 - Strip [redhat] entries from changelog (Justin M. Forbes)
