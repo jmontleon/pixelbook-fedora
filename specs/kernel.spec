@@ -123,7 +123,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.14
 
-%define rpmversion 5.14.9
+%define rpmversion 5.14.10
 %define patchversion 5.14
 %define pkgrelease 300
 
@@ -672,7 +672,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.14.9.tar.xz
+Source0: linux-5.14.10.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1358,8 +1358,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.14.9 -c
-mv linux-5.14.9 linux-%{KVERREL}
+%setup -q -n kernel-5.14.10 -c
+mv linux-5.14.10 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2958,6 +2958,12 @@ fi
 #
 #
 %changelog
+* Thu Oct 07 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.10-0]
+- Revert "net: stmmac: dwmac-rk: fix unbalanced pm_runtime_enable warnings" (Peter Robinson)
+- e100e: Fix packet loss issues seen on Intel network controller (Mark Pearson)
+- bpf: Fix integer overflow in prealloc_elems_and_freelist() (Tatsuhiko Yasumatsu)
+- Revert "acpi: prefer booting with ACPI over DTS" (Justin M. Forbes)
+
 * Thu Sep 30 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.9-0]
 - Revert "block, bfq: honor already-setup queue merges" (Jens Axboe)
 
