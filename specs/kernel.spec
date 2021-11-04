@@ -80,7 +80,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 300
+%global distro_build 301
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -123,15 +123,15 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.14
 
-%define rpmversion 5.14.15
+%define rpmversion 5.14.16
 %define patchversion 5.14
-%define pkgrelease 300
+%define pkgrelease 301
 
 # This is needed to do merge window version magic
 %define patchlevel 14
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 301.pixelbook%{?buildid}%{?dist}
+%define specrelease 302.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -672,7 +672,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.14.15.tar.xz
+Source0: linux-5.14.16.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1358,8 +1358,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.14.15 -c
-mv linux-5.14.15 linux-%{KVERREL}
+%setup -q -n kernel-5.14.16 -c
+mv linux-5.14.16 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2958,7 +2958,15 @@ fi
 #
 #
 %changelog
-* Wed Oct 27 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.15-300]
+* Wed Nov 03 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.16-1]
+- Update release for usb fix rebuild (Justin M. Forbes)
+- Revert "xhci: Set HCD flag to defer primary roothub registration" (Justin M. Forbes)
+- Revert "usb: core: hcd: Add support for deferring roothub registration" (Justin M. Forbes)
+
+* Tue Nov 02 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.16-0]
+- Changelog entry for 5.14.15 (Justin M. Forbes)
+
+* Wed Oct 27 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.15-0]
 - Linux v5.14.15
 
 * Wed Oct 20 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.14-0]
