@@ -123,7 +123,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.14
 
-%define rpmversion 5.14.16
+%define rpmversion 5.14.17
 %define patchversion 5.14
 %define pkgrelease 301
 
@@ -672,7 +672,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.14.16.tar.xz
+Source0: linux-5.14.17.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1358,8 +1358,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.14.16 -c
-mv linux-5.14.16 linux-%{KVERREL}
+%setup -q -n kernel-5.14.17 -c
+mv linux-5.14.17 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2958,6 +2958,10 @@ fi
 #
 #
 %changelog
+* Mon Nov 08 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.17-1]
+- btrfs: fix memory ordering between normal and ordered work functions (Nikolay Borisov)
+- Turn on COMMON_CLK_AXG_AUDIO for Fedora rhbz 2020481 (Justin M. Forbes)
+
 * Wed Nov 03 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.14.16-1]
 - Update release for usb fix rebuild (Justin M. Forbes)
 - Revert "xhci: Set HCD flag to defer primary roothub registration" (Justin M. Forbes)
