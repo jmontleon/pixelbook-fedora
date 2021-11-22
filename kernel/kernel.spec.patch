@@ -1,0 +1,32 @@
+--- kernel.spec.orig	2021-11-22 10:19:21.000000000 -0500
++++ kernel.spec	2021-11-22 16:09:45.667676579 -0500
+@@ -136,7 +136,7 @@
+ %define patchlevel 15
+ 
+ # allow pkg_release to have configurable %%{?dist} tag
+-%define specrelease 200%{?buildid}%{?dist}
++%define specrelease 201.pixelbook%{?buildid}%{?dist}
+ 
+ %define pkg_release %{specrelease}
+ 
+@@ -841,7 +841,8 @@
+ Source4002: gating.yaml
+ 
+ ## Patches needed for building this package
+-
++Patch0: reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
++Patch2: reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
+ %if !%{nopatches}
+ 
+ Patch1: patch-%{patchversion}-redhat.patch
+@@ -1379,7 +1380,8 @@
+ 
+ cd linux-%{KVERREL}
+ cp -a %{SOURCE1} .
+-
++ApplyOptionalPatch reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
++ApplyOptionalPatch reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
+ %if !%{nopatches}
+ 
+ ApplyOptionalPatch patch-%{patchversion}-redhat.patch
+
