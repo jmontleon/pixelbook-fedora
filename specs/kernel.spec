@@ -136,7 +136,7 @@ Summary: The Linux kernel
 %define patchlevel 15
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 201.pixelbook%{?buildid}%{?dist}
+%define specrelease 202.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
