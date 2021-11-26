@@ -1,6 +1,6 @@
 # Fedora on Pixelbook
 
-This process can be used to get Fedora installed on your Chromebook. This process will destroy your data so make sure you have backups of anything you need. When you're done ChromeOS will not be bootable and your data will be wiped.
+This process can be used to get Fedora installed on your Chromebook. This process will destroy your data so make sure you have backups of anything you need. When you're done ChromeOS will not be bootable and your data will be wiped. See the notes below for how to adapt them for [other distrbutions](#other-distributions).
 
 What works and doesn't work:
 
