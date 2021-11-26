@@ -60,7 +60,7 @@ By default audio will not work at all, but by copying topology and firmware file
     1. `sudo cp /mnt/opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin`
 1. Replace pipewire with pulseaudio, to fix a mic noise [issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452): `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`
 1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm`
-1. After rebooting you should have audio
+1. After rebooting you should have audio (note that some systems require 2 or occasionally 3 reboots before everything functions as expected)
 
 ## Brightness
 1. `sudo dnf install pixelbook-udev && sudo dnf -y update`, if you haven't already.
