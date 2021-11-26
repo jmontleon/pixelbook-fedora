@@ -60,7 +60,7 @@ By default audio will not work at all, but by copying topology and firmware file
     1. `sudo cp /mnt/opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin`
 1. Replace pipewire with pulseaudio, to fix a mic noise [issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452): `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`
 1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm`
-1. After rebooting you should have audio (note that some systems require 2 or occasionally 3 reboots before everything functions as expected)
+1. After rebooting you should have audio (Note: Some systems require 2 or occasionally 3 reboots. See the troubleshooting section for details)
 
 ## Brightness
 1. `sudo dnf install pixelbook-udev && sudo dnf -y update`, if you haven't already.
@@ -106,3 +106,16 @@ If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To 
 1. `sudo usermod -aG input $USER`, if you haven't already
 1. Configure `/usr/bin/pixelbook-touchscreen-click` to run automatically at login 
 1. Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
+
+# Troubleshooting.
+1. Occasionally when booting after making several changes users, myself included, have observed oddities, including sound continuing to fail, the mouse not working, etc. If this happens, the problem is often remedied by rebooting. If you continue to have problems verify the configuration and try rebooting by using the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again. See past issues for examples https://github.com/jmontleon/pixelbook-fedora/issues/1 and https://github.com/jmontleon/pixelbook-fedora/issues/2
+
+# Other distributions
+For the most part nothing in this repo is distribution specific other than the availability of packages to simplify the install process. The primary adjustments you will need to be concerned about are listed below.
+
+1. As of the 5.15.5 kernel there is a display issue and a recently introduced audio is I have created patches for. These are used to built the custom kernel in my Copr repo. If a current and fully functional kernel you'll need to build it with these patches. There is a patch set working its way down to the mainline kernel and hopefully a proper fix for the audio issue will also find its way into the mainline soon.
+- [ASOC Patch](https://github.com/jmontleon/pixelbook-fedora/blob/main/kernel/reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch) [Bug](https://bugzilla.kernel.org/show_bug.cgi?id=215109)
+- [i915 Patch](https://github.com/jmontleon/pixelbook-fedora/blob/main/kernel/reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch) [Issue](https://gitlab.freedesktop.org/drm/intel/-/issues/3680)
+1. The other change you will have to be concerned with is placement of configuration and scripts that are provided with packages. All sources for the packages (other than the kernel) are provided in the [configs](https://github.com/jmontleon/pixelbook-fedora/tree/main/configs) and [scripts](https://github.com/jmontleon/pixelbook-fedora/tree/main/scripts) directories. When a package is referenced, using the alsa ucm package as an example, note the [sources](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L6-L7) in the spec file and where they are [installed](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L21-L22) and manually do the same.
+
+If you would like to provide these packages in an AUR, PPA, or similar repo for other distributions for yourself and others please let me know and I will add them to the instructions.
