@@ -128,7 +128,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.15
 
-%define rpmversion 5.15.5
+%define rpmversion 5.15.6
 %define patchversion 5.15
 %define pkgrelease 200
 
@@ -136,7 +136,7 @@ Summary: The Linux kernel
 %define patchlevel 15
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 203.pixelbook%{?buildid}%{?dist}
+%define specrelease 201.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -682,7 +682,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.15.5.tar.xz
+Source0: linux-5.15.6.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1375,8 +1375,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.15.5 -c
-mv linux-5.15.5 linux-%{KVERREL}
+%setup -q -n kernel-5.15.6 -c
+mv linux-5.15.6 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2974,6 +2974,11 @@ fi
 #
 #
 %changelog
+* Wed Dec 01 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.15-0]
+- Revert "drm/i915: Implement Wa_1508744258" (Justin M. Forbes)
+- Revert "Revert "fuse: fix page stealing"" (Justin M. Forbes)
+- scsi: sd: Fix sd_do_mode_sense() buffer length handling (Damien Le Moal)
+
 * Thu Nov 25 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.15-0]
 - Revert "fuse: fix page stealing" (Justin M. Forbes)
 
