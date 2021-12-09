@@ -843,7 +843,6 @@ Source4002: gating.yaml
 ## Patches needed for building this package
 Patch0: reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
 Patch2: reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
-Patch3: iwlwifi-fix.patch
 %if !%{nopatches}
 
 Patch1: patch-%{patchversion}-redhat.patch
@@ -1383,7 +1382,6 @@ cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
 ApplyOptionalPatch reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
 ApplyOptionalPatch reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
-ApplyOptionalPatch iwlwifi-fix.patch
 %if !%{nopatches}
 
 ApplyOptionalPatch patch-%{patchversion}-redhat.patch
