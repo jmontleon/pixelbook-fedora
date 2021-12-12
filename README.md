@@ -38,6 +38,11 @@ What works and doesn't work:
 1. Do make a backup of the stock firmware and **ensure you do not lose it**.
 1. If you ever want to go back to ChromeOS you can use the script to restore this backup firmware. **Don't lose it.**
 
+## Update Coreboot
+If you followed the instructions above you should be all set.  
+  
+If you skipped the instructions above because coreboot was already insalled please ensure it is up to date. At least one [trace](https://github.com/jmontleon/pixelbook-fedora/issues/5#issuecomment-985623474) in dmesg was resolved by a firmware update.   
+
 ## Install Fedora
 1. Prepare a bootable [Fedora USB stick](https://fedoramagazine.org/make-fedora-usb-stick/)
 1. Insert it into the Pixelbook and install it normally.
