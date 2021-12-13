@@ -1,0 +1,7 @@
+---
+- name: Install supporting packages
+  become: true
+  dnf:
+    state: present
+    name:
+      - lynx

@@ -1,0 +1,82 @@
+---
+- name: Run supporting tasks
+  include_tasks: support.yml
+
+- name: Get latest recovery image version
+  shell: lynx -dump -listonly  https://cros-updates-serving.appspot.com/  | awk '{print $2}' | grep "eve_recovery" | sort -u | tail -n 1 | sed s/"\.zip"/""/g
+  register: recovery_image
+
+- name: Get basename
+  shell: basename "{{ recovery_image.stdout }}"
+  register: recovery_image_basename
+
+- name: Download {{ recovery_image.stdout }}.zip to {{ recovery_image_basename.stdout }}.zip (this can take a while)
+  get_url:
+    url: "{{ recovery_image.stdout }}.zip"
+    dest: "./{{ recovery_image_basename.stdout }}.zip"
+
+- name: Check if we've unzipped recovery image ({{ recovery_image_basename.stdout }})
+  register: image_unzipped
+  stat:
+    path: "{{ recovery_image_basename.stdout }}"
+
+- name: Unzip recovery image {{ recovery_image_basename.stdout }}
+  when: image_unzipped.stat.exists == False
+  unarchive:
+    src: "{{ recovery_image_basename.stdout }}.zip"
+    dest: "."
+    remote_src: yes
+
+- name: Make device maps
+  become: true
+  command: "kpartx -av {{ recovery_image_basename.stdout }}"
+
+- name: Mount filesystem
+  become: true
+  ## Using the mount module seems to cause weird behaviour on reboot, so we aren't using it
+  command: 
+    cmd: "mount -o ro /dev/mapper/loop0p3 /mnt"
+    warn: false
+
+
+- name: Copy firmware files
+  become: true
+  ## Using the copy module seems to cause weird behaviour, so we aren't using it
+  shell: |
+    cp /mnt/lib/firmware/9d71-GOOGLE-EVEMAX-0-tplg.bin /lib/firmware/
+    cp /mnt/lib/firmware/dsp_lib_dsm_core_spt_release.bin /lib/firmware/
+    cp /mnt/lib/firmware/intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin /lib/firmware/intel
+    if [ ! -d /opt/google/dsm ]; then
+      mkdir -p /opt/google/dsm/
+    fi
+    cp /mnt/opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin
+
+- name: Swap pipewire to pipeaudio
+  become: true
+  command:
+    cmd: "dnf swap --allowerasing -y pipewire-pulseaudio pulseaudio"
+    warn: false
+
+- name: Swap wireplumber
+  become: true
+  command:
+    cmd: "dnf swap wireplumber -y pipewire-media-session"
+    warn: false
+
+- name: Swap jack kit
+  become: true
+  command:
+    cmd: "dnf swap -y pipewire-jack-audio-connection-kit jack-audio-connection-kit"
+    warn: false
+
+- name: Remove pipewire-alsa
+  become: true
+  dnf:
+    name: pipewire-alsa-ucm
+    state: absent
+
+- name: Install pixelbook-alsa-ucm
+  become: true
+  dnf:
+    name: pixelbook-alsa-ucm
+    state: present

@@ -1,0 +1,11 @@
+---
+- hosts: all
+
+  tasks:
+  - name: Run base tasks
+    include_role:
+      name: base
+
+  - name: Run audio tasks
+    include_role:
+      name: audio
