@@ -41,7 +41,7 @@ What works and doesn't work:
 ## Update Coreboot
 If you followed the instructions above you should be all set.  
   
-If you skipped the instructions above because coreboot was already insalled please ensure it is up to date. At least one [trace](https://github.com/jmontleon/pixelbook-fedora/issues/5#issuecomment-985623474) in dmesg was resolved by a firmware update.   
+If you skipped the instructions above because coreboot was already installed please ensure it is up to date. At least one [trace](https://github.com/jmontleon/pixelbook-fedora/issues/5#issuecomment-985623474) in dmesg was resolved by a firmware update.   
 
 ## Install Fedora
 1. Prepare a bootable [Fedora USB stick](https://fedoramagazine.org/make-fedora-usb-stick/)
