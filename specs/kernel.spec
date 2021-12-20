@@ -128,7 +128,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.15
 
-%define rpmversion 5.15.8
+%define rpmversion 5.15.10
 %define patchversion 5.15
 %define pkgrelease 200
 
@@ -682,7 +682,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.15.8.tar.xz
+Source0: linux-5.15.10.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1375,8 +1375,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.15.8 -c
-mv linux-5.15.8 linux-%{KVERREL}
+%setup -q -n kernel-5.15.10 -c
+mv linux-5.15.10 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2974,6 +2974,10 @@ fi
 #
 #
 %changelog
+* Fri Dec 17 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.15.10-0]
+- Changelog fixes for stable (Justin M. Forbes)
+- platform/x86: thinkpad_acpi: Add lid_logo_dot to the list of safe LEDs (Hans de Goede)
+
 * Tue Dec 14 2021 Justin M. Forbes <jforbes@fedoraproject.org> [5.15-0]
 - Enable CONFIG_VFIO_NOIOMMU for Fedora (Justin M. Forbes)
 
