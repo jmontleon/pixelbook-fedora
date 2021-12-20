@@ -9,22 +9,20 @@
  
  %define pkg_release %{specrelease}
  
-@@ -841,7 +841,8 @@
+@@ -841,7 +841,7 @@
  Source4002: gating.yaml
  
  ## Patches needed for building this package
 -
-+Patch0: reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
-+Patch2: reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
++Patch0: reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
  %if !%{nopatches}
  
  Patch1: patch-%{patchversion}-redhat.patch
-@@ -1379,7 +1380,8 @@
+@@ -1379,7 +1380,7 @@
  
  cd linux-%{KVERREL}
  cp -a %{SOURCE1} .
 -
-+ApplyOptionalPatch reversed-drm-i915-dp-Don-t-use-DPCD-backlights-that-need-PWM-enable-disable.patch
 +ApplyOptionalPatch reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
  %if !%{nopatches}
  
