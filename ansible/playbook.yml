@@ -24,6 +24,12 @@
         name: jmontleon/pixelbook
       become: true
 
+    - name: Create i915 modprobe conf
+      copy:
+        content: "options i915 enable_dpcd_backlight=1"
+        dest: /etc/modprobe.d/i915.conf
+      become: true
+
     - name: Update system
       dnf:
         name: "*"
@@ -146,7 +152,20 @@
         - pixelbook-scripts
         - pixelbook-touchpad-tweak
         - pixelbook-udev
+        - xdotool
         state: present
+
+    - name: Add you to the input group
+      user:
+        name: "{{ ansible_user_id }}"
+        groups: input
+        append: yes
+
+    - name: Enable acpid
+      systemd:
+        name: acpid
+        state: started
+        enabled: yes
 
     always:
     - name: Unmount recovery image
