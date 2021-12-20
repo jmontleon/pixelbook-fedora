@@ -46,6 +46,9 @@ If you skipped the instructions above because coreboot was already installed ple
 ## Install Fedora
 1. Prepare a bootable [Fedora USB stick](https://fedoramagazine.org/make-fedora-usb-stick/)
 1. Insert it into the Pixelbook and install it normally.
+
+Once fedora is installed you may make use of the [ansible playbook](ansible/README.md) provided for configuration or continue following the instructions in this file.  
+
 1. `sudo dnf -y copr enable jmontleon/pixelbook`
 1. `sudo dnf config-manager --setopt 'copr:copr.fedorainfracloud.org:jmontleon:pixelbook.priority=98' --save`
 1. `sudo dnf -y update`

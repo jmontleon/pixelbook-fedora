@@ -1,0 +1,171 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Check distribution
+    fail:
+      msg: This playbook is only intended to be run on Fedora
+    when: ansible_distribution != 'Fedora'
+
+  - name: Check distribution version
+    fail:
+      msg: You must be running Fedora 34 or greater
+    when: ansible_distribution_version|int < 34
+
+  - name: Check user
+    fail:
+      msg: You should run this as a non-root user
+    when: ansible_user_id == "root"
+
+  - block:
+    - name: Enable COPR repo
+      community.general.copr:
+        host: copr.fedorainfracloud.org
+        state: enabled
+        name: jmontleon/pixelbook
+      become: true
+
+    - name: Update system
+      dnf:
+        name: "*"
+        state: latest
+      become: true
+
+    - name: Get latest recovery image information
+      uri:
+        url: https://cros-updates-serving.appspot.com
+        return_content: true
+      register: recovery_info
+
+    - name: Parse recovery image information
+      set_fact:
+        recovery_image_url: "{{ (recovery_info.content | regex_search('https.*eve_recovery_stable.*zip')).split('\"') | last }}"
+
+    - name: Create a temporary working directory
+      tempfile:
+        state: directory
+        path: "{{ playbook_dir }}"
+      register: tmp_dir
+
+    - name: Check for downloaded image
+      stat:
+        path: "{{ playbook_dir }}/{{ recovery_image_url.split('/') | last }}"
+      register: file
+
+    - name: Download recovery image
+      get_url:
+        url: "{{ recovery_image_url }}"
+        dest: "{{ playbook_dir }}"
+      register: recovery_image_archive
+      when: not(file.stat.exists)
+
+    - name: Set image file
+      set_fact:
+        recovery_image_archive:
+          dest: "{{ playbook_dir }}/{{ recovery_image_url | split('/') | last }}"
+      when: file.stat.exists
+
+    - name: Unzip recovery image
+      unarchive:
+        src: "{{ recovery_image_archive.dest }}"
+        dest: "{{ tmp_dir.path }}"
+        remote_src: yes
+        list_files : true
+      register: recovery_image_unarchive_results
+
+    - name: Make device maps
+      become: true
+      command: "kpartx -s -av {{ tmp_dir.path }}/{{ recovery_image_unarchive_results.files | first }}"
+      register: kpartx
+
+    - name:
+      set_fact:
+        loop_device: "{{ kpartx.stdout_lines[2].split(' ')[2] }}"
+
+    - name: Mount recovery image
+      mount:
+        path: /mnt
+        src: "/dev/mapper/{{ loop_device }}"
+        fstype: ext2
+        opts: ro
+        state: mounted
+        fstab: "{{ tmp_dir.path }}/fstab }}"
+      become: true
+
+    - name: Ensure dsm directory exists
+      file:
+        path: /opt/google/dsm/
+        state: directory
+        recurse: yes
+      become: true
+
+    - name: Copy dsmparam.bin
+      copy:
+        src: /mnt/opt/google/dsm/dsmparam.bin
+        dest: /opt/google/dsm/dsmparam.bin
+
+    - name: Copy firmware files
+      copy:
+        src: "/mnt/lib/firmware/{{ item }}"
+        dest: "/lib/firmware/{{ item }}"
+        remote_src: true
+      become: true
+      with_items:
+      - 9d71-GOOGLE-EVEMAX-0-tplg.bin
+      - dsp_lib_dsm_core_spt_release.bin
+      - intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin
+
+    - name: Swap pipewire to pipeaudio
+      become: true
+      command:
+        cmd: "dnf swap --allowerasing -y pipewire-pulseaudio pulseaudio"
+        warn: false
+
+    - name: Swap wireplumber
+      become: true
+      command:
+        cmd: "dnf swap wireplumber -y pipewire-media-session"
+        warn: false
+
+    - name: Swap jack kit
+      become: true
+      command:
+        cmd: "dnf swap -y pipewire-jack-audio-connection-kit jack-audio-connection-kit"
+        warn: false
+
+    - name: Remove pipewire-alsa
+      become: true
+      dnf:
+        name: pipewire-alsa-ucm
+        state: absent
+
+    - name: Install pixelbook packages from COPR
+      become: true
+      dnf:
+        name:
+        - pixelbook-alsa-ucm
+        - pixelbook-scripts
+        - pixelbook-touchpad-tweak
+        - pixelbook-udev
+        state: present
+
+    always:
+    - name: Unmount recovery image
+      mount:
+        path: /mnt
+        src: "/dev/mapper/{{ loop_device }}"
+        opts: ro
+        state: absent
+        fstab: "{{ tmp_dir.path }}/fstab }}"
+      become: true
+      when: tmp_dir is defined
+
+    - name: Remove device maps
+      command: "kpartx -dv {{ tmp_dir.path }}/{{ recovery_image_unarchive_results.files | first }}"
+      become: true
+      when: recovery_image_unarchive_results is defined
+
+    - name: Remove tmp directory
+      file:
+        state: absent
+        path: "{{ tmp_dir.path }}"
+      when: tmp_dir is defined
