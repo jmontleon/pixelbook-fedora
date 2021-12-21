@@ -7,7 +7,7 @@ Source0:    pixelbook-display-backlight
 Source1:    pixelbook-keyboard-backlight
 Source2:    pixelbook-touchscreen-click
 Source3:    pixelbook-display-orientation
-Source4:    pixelbook-touchscreen-click
+Source4:    pixelbook-disable-tablet-touchpad
 BuildArch:  noarch
 
 Requires: acpid
