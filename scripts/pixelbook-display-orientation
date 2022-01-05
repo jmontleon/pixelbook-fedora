@@ -1,21 +1,37 @@
 #!/usr/bin/bash
 
 monitor-sensor --accel > /tmp/sensor.log 2>&1 &
+SEARCH='WCOM50C1:00 2D1F:5143 (\\s+id.*|Stylus Pen.*) pointer'
 
 while inotifywait -e modify /tmp/sensor.log; do
-  ORIENTATION=$(tail -n 1 /tmp/sensor.log | grep 'orientation' | grep -oE '[^ ]+$')
-  case "$ORIENTATION" in
-  normal)
-    xrandr --output eDP-1 --rotate normal
-    xinput set-prop "WCOM50C1:00 2D1F:5143" "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1 ;;
-  bottom-up)
-    xrandr --output eDP-1 --rotate inverted
-    xinput set-prop "WCOM50C1:00 2D1F:5143" "Coordinate Transformation Matrix" -1 0 1 0 -1 1 0 0 1 ;;
-  right-up)
-    xrandr --output eDP-1 --rotate right
-    xinput set-prop "WCOM50C1:00 2D1F:5143" "Coordinate Transformation Matrix" 0 1 0 -1 0 1 0 0 1 ;;
-  left-up)
-    xrandr --output eDP-1 --rotate left
-    xinput set-prop "WCOM50C1:00 2D1F:5143" "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1 ;;
-  esac
+  
+  if [ "$SEARCH" = "" ]; then 
+    continue
+  fi
+
+  ids=$(xinput --list | awk -v search="$SEARCH" \
+    '$0 ~ search {match($0, /id=[0-9]+/);\
+    if (RSTART) \
+      print substr($0, RSTART+3, RLENGTH-3)\
+    }'\
+  )
+
+  for i in $ids
+  do
+    ORIENTATION=$(tail -n 1 /tmp/sensor.log | grep 'orientation' | grep -oE '[^ ]+$')
+    case "$ORIENTATION" in
+      normal)
+        xrandr --output eDP-1 --rotate normal
+        xinput set-prop $i "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1 ;;
+      bottom-up)
+        xrandr --output eDP-1 --rotate inverted
+        xinput set-prop $i "Coordinate Transformation Matrix" -1 0 1 0 -1 1 0 0 1 ;;
+      right-up)
+        xrandr --output eDP-1 --rotate right
+        xinput set-prop $i "Coordinate Transformation Matrix" 0 1 0 -1 0 1 0 0 1 ;;
+      left-up)
+        xrandr --output eDP-1 --rotate left
+        xinput set-prop $i "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1 ;;
+    esac
+  done
 done
