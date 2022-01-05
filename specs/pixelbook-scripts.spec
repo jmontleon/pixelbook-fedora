@@ -1,5 +1,5 @@
 Name:       pixelbook-scripts
-Version:    1.0.5
+Version:    1.0.6
 Release:    1%{?dist}
 Summary:    Scripts for interacting with pixelbook backlights and touchpad
 License:    WTFPL
@@ -36,6 +36,9 @@ install -m 0755 %{SOURCE4} %{buildroot}%{_bindir}/
 /usr/bin/*
 
 %changelog
+* Wed Jan 05 2022 Huy Le <dacrazyazn@gmail.com> - 1.0.6-1
+- Add stylus/pen to be included in display orientation change
+
 * Mon Dec 20 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.5-1
 - Fix duplicate source, add pixelbook-disable-tablet-touchpad
 
