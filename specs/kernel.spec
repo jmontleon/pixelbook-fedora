@@ -85,9 +85,9 @@ Summary: The Linux kernel
 # Set debugbuildsenabled to 0 to not build a separate debug kernel, but
 #  to build the base kernel using the debug configuration. (Specifying
 #  the --with-release option overrides this setting.)
-%define debugbuildsenabled 1
+%define debugbuildsenabled 0
 
-%global distro_build 0.rc6.41
+%global distro_build 0.rc8.20220106git75acfdb6fd92.56
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.16.0
 %define patchversion 5.16
-%define pkgrelease 0.rc6.41
+%define pkgrelease 0.rc8.20220106git75acfdb6fd92.56
 
 # This is needed to do merge window version magic
 %define patchlevel 16
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 43.rc6.pixelbook%{?buildid}%{?dist}
+%define specrelease 0.rc8.20220106git75acfdb6fd92.57.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -689,7 +689,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.16-rc6.tar.xz
+Source0: linux-5.16-rc8-48-g75acfdb6fd92.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1383,8 +1383,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.16-rc6 -c
-mv linux-5.16-rc6 linux-%{KVERREL}
+%setup -q -n kernel-5.16-rc8-48-g75acfdb6fd92 -c
+mv linux-5.16-rc8-48-g75acfdb6fd92 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2981,6 +2981,19 @@ fi
 #
 #
 %changelog
+* Thu Jan 06 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc8.20220106git75acfdb6fd92.56]
+- Fedora config updates for 5.16 (Justin M. Forbes)
+
+* Mon Jan 03 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc8.55]
+- redhat/configs: enable CONFIG_INPUT_KEYBOARD for AARCH64 (Vitaly Kuznetsov)
+
+* Fri Dec 24 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc6.20211224git7a29b11da965.45]
+- Fedora configs for 5.16 pt 1 (Justin M. Forbes)
+- redhat/configs: NFS: disable UDP, insecure enctypes (Benjamin Coddington) [1952863]
+
+* Tue Dec 21 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc6.20211221git59b3f9448833.42]
+- Update rebase-notes with dracut 5.17 information (Justin M. Forbes)
+
 * Mon Dec 20 2021 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc6.41]
 - redhat/configs: Enable CONFIG_CRYPTO_BLAKE2B (Neal Gompa) [2031547]
 
