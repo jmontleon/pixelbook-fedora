@@ -108,6 +108,7 @@
       copy:
         src: /mnt/opt/google/dsm/dsmparam.bin
         dest: /opt/google/dsm/dsmparam.bin
+      become: true
 
     - name: Copy firmware files
       copy:
@@ -160,6 +161,7 @@
         name: "{{ ansible_user_id }}"
         groups: input
         append: yes
+      become: true
 
     - name: Enable acpid
       systemd:
