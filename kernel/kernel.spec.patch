@@ -1,7 +1,7 @@
---- kernel.spec.orig	2021-11-22 10:19:21.000000000 -0500
-+++ kernel.spec	2021-11-22 16:09:45.667676579 -0500
-@@ -136,7 +136,7 @@
- %define patchlevel 15
+--- kernel.spec.orig	2022-01-16 19:27:26.000000000 -0500
++++ kernel.spec	2022-01-17 16:04:07.718145887 -0500
+@@ -138,7 +138,7 @@
+ %define patchlevel 16
  
  # allow pkg_release to have configurable %%{?dist} tag
 -%define specrelease 200%{?buildid}%{?dist}
@@ -9,7 +9,7 @@
  
  %define pkg_release %{specrelease}
  
-@@ -841,7 +841,7 @@
+@@ -853,7 +853,7 @@
  Source4002: gating.yaml
  
  ## Patches needed for building this package
@@ -18,7 +18,7 @@
  %if !%{nopatches}
  
  Patch1: patch-%{patchversion}-redhat.patch
-@@ -1379,7 +1380,7 @@
+@@ -1391,7 +1391,7 @@
  
  cd linux-%{KVERREL}
  cp -a %{SOURCE1} .
@@ -27,4 +27,3 @@
  %if !%{nopatches}
  
  ApplyOptionalPatch patch-%{patchversion}-redhat.patch
-

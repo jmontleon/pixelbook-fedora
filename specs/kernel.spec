@@ -77,7 +77,7 @@ Summary: The Linux kernel
 #  kernel release. (This includes prepatch or "rc" releases.)
 # Set released_kernel to 0 when the upstream source tarball contains an
 #  unreleased kernel development snapshot.
-%global released_kernel 0
+%global released_kernel 1
 
 # Set debugbuildsenabled to 1 to build separate base and debug kernels
 #  (on supported architectures). The kernel-debug-* subpackages will
@@ -85,9 +85,9 @@ Summary: The Linux kernel
 # Set debugbuildsenabled to 0 to not build a separate debug kernel, but
 #  to build the base kernel using the debug configuration. (Specifying
 #  the --with-release option overrides this setting.)
-%define debugbuildsenabled 0
+%define debugbuildsenabled 1
 
-%global distro_build 0.rc8.20220106git75acfdb6fd92.56
+%global distro_build 200
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -130,15 +130,15 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.16
 
-%define rpmversion 5.16.0
+%define rpmversion 5.16.1
 %define patchversion 5.16
-%define pkgrelease 0.rc8.20220106git75acfdb6fd92.56
+%define pkgrelease 200
 
 # This is needed to do merge window version magic
 %define patchlevel 16
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc8.20220106git75acfdb6fd92.57.pixelbook%{?buildid}%{?dist}
+%define specrelease 201.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -618,6 +618,9 @@ BuildRequires: libcap-devel libcap-ng-devel
 BuildRequires: pciutils-devel
 %endif
 %endif
+%if %{with_tools} || %{signmodules} || %{signkernel}
+BuildRequires: openssl-devel
+%endif
 %if %{with_bpftool}
 BuildRequires: python3-docutils
 BuildRequires: zlib-devel binutils-devel
@@ -651,7 +654,7 @@ BuildRequires: kabi-dw
 %endif
 
 %if %{signkernel}%{signmodules}
-BuildRequires: openssl openssl-devel
+BuildRequires: openssl
 %if %{signkernel}
 %ifarch x86_64 aarch64
 BuildRequires: nss-tools
@@ -689,7 +692,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.16-rc8-48-g75acfdb6fd92.tar.xz
+Source0: linux-5.16.1.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1383,8 +1386,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.16-rc8-48-g75acfdb6fd92 -c
-mv linux-5.16-rc8-48-g75acfdb6fd92 linux-%{KVERREL}
+%setup -q -n kernel-5.16.1 -c
+mv linux-5.16.1 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2981,6 +2984,28 @@ fi
 #
 #
 %changelog
+* Sun Jan 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.1-60]
+- netfilter: nat: force port remap to prevent shadowing well-known ports (Florian Westphal)
+- netfilter: conntrack: tag conntracks picked up in local out hook (Florian Westphal)
+- configs/fedora: Enable CONFIG_NFC_PN532_UART for use PN532 NFC module (Ziqian SUN (Zamir))
+- Add PATCHLIST_URL to Makefile.variables (Justin M. Forbes)
+- x86/PCI: Ignore E820 reservations for bridge windows on newer systems (Hans de Goede)
+- Updates to configure for stable branch (Justin M. Forbes)
+- redhat: switch the vsyscall config to CONFIG_LEGACY_VSYSCALL_XONLY=y (Herton R. Krzesinski) [1876977]
+- redhat: configs: increase CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE (Rafael Aquini)
+- move CONFIG_STRICT_SIGALTSTACK_SIZE to the appropriate directory (David Arcari)
+- redhat/configs: Enable CONFIG_DM_MULTIPATH_IOA for fedora (Benjamin Marzinski)
+- redhat/configs: Enable CONFIG_DM_MULTIPATH_HST (Benjamin Marzinski) [2000835]
+- redhat: Pull in openssl-devel as a build dependency correctly (Neal Gompa) [2034670]
+
+* Sun Jan 09 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc8.20220109git4634129ad9fd.59]
+- redhat/configs: Migrate ZRAM_DEF_* configs to common/ (Neal Gompa)
+- redhat/configs: Enable CONFIG_CRYPTO_ZSTD (Neal Gompa) [2032758]
+- Turn CONFIG_DEVMEM back off for aarch64 (Justin M. Forbes)
+
+* Fri Jan 07 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc8.20220107gitddec8ed2d490.57]
+- Clean up excess text in Fedora config files (Justin M. Forbes)
+
 * Thu Jan 06 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.16-0.rc8.20220106git75acfdb6fd92.56]
 - Fedora config updates for 5.16 (Justin M. Forbes)
 
