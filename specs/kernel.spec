@@ -128,7 +128,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.15
 
-%define rpmversion 5.15.15
+%define rpmversion 5.15.16
 %define patchversion 5.15
 %define pkgrelease 200
 
@@ -682,7 +682,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.15.15.tar.xz
+Source0: linux-5.15.16.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1375,8 +1375,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.15.15 -c
-mv linux-5.15.15 linux-%{KVERREL}
+%setup -q -n kernel-5.15.16 -c
+mv linux-5.15.16 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2974,6 +2974,9 @@ fi
 #
 #
 %changelog
+* Thu Jan 20 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.15.16-0]
+- drm/amdgpu: don't do resets on APUs which don't support it (Alex Deucher)
+
 * Sun Jan 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.15.15-0]
 - netfilter: nat: force port remap to prevent shadowing well-known ports (Florian Westphal)
 - netfilter: conntrack: tag conntracks picked up in local out hook (Florian Westphal)
