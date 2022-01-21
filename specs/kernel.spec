@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.16
 
-%define rpmversion 5.16.1
+%define rpmversion 5.16.2
 %define patchversion 5.16
 %define pkgrelease 200
 
@@ -692,7 +692,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.16.1.tar.xz
+Source0: linux-5.16.2.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1386,8 +1386,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.16.1 -c
-mv linux-5.16.1 linux-%{KVERREL}
+%setup -q -n kernel-5.16.2 -c
+mv linux-5.16.2 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -1611,6 +1611,7 @@ BuildKernel() {
 
     mkdir -p $RPM_BUILD_ROOT/%{image_install_path}
     mkdir -p $RPM_BUILD_ROOT/lib/modules/$KernelVer
+    mkdir -p $RPM_BUILD_ROOT/lib/modules/$KernelVer/systemtap
 %if %{with_debuginfo}
     mkdir -p $RPM_BUILD_ROOT%{debuginfodir}/%{image_install_path}
 %endif
@@ -2929,6 +2930,7 @@ fi
 /lib/modules/%{KVERREL}%{?3:+%{3}}/updates\
 /lib/modules/%{KVERREL}%{?3:+%{3}}/weak-updates\
 /lib/modules/%{KVERREL}%{?3:+%{3}}/crashkernel.default\
+/lib/modules/%{KVERREL}%{?3:+%{3}}/systemtap\
 %{_datadir}/doc/kernel-keys/%{KVERREL}%{?3:+%{3}}\
 %if %{1}\
 /lib/modules/%{KVERREL}%{?3:+%{3}}/vdso\
@@ -2984,6 +2986,16 @@ fi
 #
 #
 %changelog
+* Thu Jan 20 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.2-0]
+- Add packaged but empty /lib/modules/<kver>/systemtap/ (Justin M. Forbes)
+- Revert "[scsi] megaraid_sas: re-add certain pci-ids" (Justin M. Forbes)
+- Revert "wireguard: disable in FIPS mode" (Justin M. Forbes)
+- Revert "mm/cma: mark CMA on x86_64 tech preview and print RHEL-specific infos" (Justin M. Forbes)
+- Revert "[fs] dax: mark tech preview" (Justin M. Forbes)
+- Revert "wireguard: mark as Tech Preview" (Justin M. Forbes)
+- drm/amdgpu: don't do resets on APUs which don't support it (Alex Deucher)
+- Reset release (Justin M. Forbes)
+
 * Sun Jan 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.1-60]
 - netfilter: nat: force port remap to prevent shadowing well-known ports (Florian Westphal)
 - netfilter: conntrack: tag conntracks picked up in local out hook (Florian Westphal)
