@@ -164,6 +164,7 @@
       become: true
 
     - name: Enable acpid
+      become: true
       systemd:
         name: acpid
         state: started
