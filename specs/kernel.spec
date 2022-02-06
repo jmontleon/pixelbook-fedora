@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.16
 
-%define rpmversion 5.16.5
+%define rpmversion 5.16.6
 %define patchversion 5.16
 %define pkgrelease 200
 
@@ -692,7 +692,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.16.5.tar.xz
+Source0: linux-5.16.6.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1386,8 +1386,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.16.5 -c
-mv linux-5.16.5 linux-%{KVERREL}
+%setup -q -n kernel-5.16.6 -c
+mv linux-5.16.6 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2986,6 +2986,10 @@ fi
 #
 #
 %changelog
+* Sat Feb 05 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.6-0]
+- Revert "ath11k: add support for WCN6855 hw2.1" (Justin M. Forbes)
+- Changelog updates for rebase (Justin M. Forbes)
+
 * Tue Feb 01 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.5-0]
 - Linux v5.16.5 rebase
 - ath11k: add support for WCN6855 hw2.1 (Baochen Qiang)
