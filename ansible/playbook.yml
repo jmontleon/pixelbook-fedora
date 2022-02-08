@@ -163,11 +163,20 @@
         append: yes
       become: true
 
+    - name: Check for acpi powerconf
+      stat: path=/etc/acpi/events/powerconf
+      register: power_stat
+
+    - name: Disable powerbutton in acpid
+      command: mv /etc/acpi/events/powerconf /etc/acpi/events/powerconf.disabled~
+      become: true
+      when: power_stat.stat.exists
+
     - name: Enable acpid
       become: true
       systemd:
         name: acpid
-        state: started
+        state: restarted
         enabled: yes
 
     always:
