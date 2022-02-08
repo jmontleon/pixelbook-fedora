@@ -11,6 +11,11 @@
       msg: You must be running Fedora 34 or greater
     when: ansible_distribution_version|int < 34
 
+  - name: Check hardware is an EVE Pixelbook
+    fail:
+      msg: This playbook is only intended to be run on an EVE Pixelbook
+    when: ansible_board_vendor != 'Google' or ansible_board_name != 'Eve'
+
   - name: Check user
     fail:
       msg: You should run this as a non-root user
