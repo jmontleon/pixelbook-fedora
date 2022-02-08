@@ -121,7 +121,7 @@
       - dsp_lib_dsm_core_spt_release.bin
       - intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin
 
-    - name: Swap pipewire to pipeaudio
+    - name: Swap pipewire to pulseaudio
       become: true
       command:
         cmd: "dnf swap --allowerasing -y pipewire-pulseaudio pulseaudio"
