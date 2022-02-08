@@ -11,6 +11,11 @@
       msg: You must be running Fedora 34 or greater
     when: ansible_distribution_version|int < 34
 
+  - name: Check hardware is an EVE Pixelbook
+    fail:
+      msg: This playbook is only intended to be run on an EVE Pixelbook
+    when: ansible_board_vendor != 'Google' or ansible_board_name != 'Eve'
+
   - name: Check user
     fail:
       msg: You should run this as a non-root user
@@ -121,7 +126,7 @@
       - dsp_lib_dsm_core_spt_release.bin
       - intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin
 
-    - name: Swap pipewire to pipeaudio
+    - name: Swap pipewire to pulseaudio
       become: true
       command:
         cmd: "dnf swap --allowerasing -y pipewire-pulseaudio pulseaudio"
@@ -163,11 +168,20 @@
         append: yes
       become: true
 
+    - name: Check for acpi powerconf
+      stat: path=/etc/acpi/events/powerconf
+      register: power_stat
+
+    - name: Disable powerbutton in acpid
+      command: mv /etc/acpi/events/powerconf /etc/acpi/events/powerconf.disabled~
+      become: true
+      when: power_stat.stat.exists
+
     - name: Enable acpid
       become: true
       systemd:
         name: acpid
-        state: started
+        state: restarted
         enabled: yes
 
     always:
