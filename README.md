@@ -102,6 +102,7 @@ In Gnome, to use the Capslock and Super keys run these commands at login or add 
 ## Orientation
 1. `sudo dnf -y install pixelbook-udev pixelbook-scripts`, if you haven't already.
 1. `sudo dnf -y update`, if you haven't already.
+1. `sudo mv /etc/acpi/events/powerconf /etc/acpi/events/powerconf.disabled~` This will prevent the power button from causing an immediate shutdown in Gnome.
 1. `sudo systemctl enable acpid`
 1. Gnome handles screen orientation automatically.
 1. For others a script, `pixelbook-display-orientation`, is available that can be set to start at login. 
@@ -138,8 +139,8 @@ See past issues for examples [1](https://github.com/jmontleon/pixelbook-fedora/i
 # Other distributions
 For the most part nothing in this repo is distribution specific other than the availability of packages to simplify the install process. The primary adjustments you will need to be concerned about are listed below.
 
-1. As of the 5.15.5 kernel a recently introduced audio issue I have created a patch for. This is used to build the custom kernel in my Copr repo. If a current and fully functional kernel is desired you will need to build it with this patch. kernel-local contains a kernel config suitable for the Pixelbook. kernel-config.patch contains a diff of the optiosn set for the Pixelbook.
-    1. [ASOC Patch](https://github.com/jmontleon/pixelbook-fedora/blob/main/kernel/reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch) and [Bug](https://bugzilla.kernel.org/show_bug.cgi?id=215109)
+1. An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0, so versions in between are not likely to have functioning audio. 5.16.0 introduced fixes to the backlight, and in kernels prior it will not be adjustable. In general 5.17.0 and above should work well.
+1. [kernel-local](https://github.com/jmontleon/pixelbook-fedora/tree/main/kernel/kernel-local) contains a config for the Fedora kernel and [kernel-local](https://github.com/jmontleon/pixelbook-fedora/tree/main/kernel/kernel-config.patch) shows the difference in configuration with the standard Fedora kernel to enable hardware support for the Pixelbook.
 1. The other change you will have to be concerned with is placement of configuration and scripts that are provided with by packages. All sources for the packages (other than the kernel) are provided in the [configs](https://github.com/jmontleon/pixelbook-fedora/tree/main/configs) and [scripts](https://github.com/jmontleon/pixelbook-fedora/tree/main/scripts) directories. When a package is referenced, using the alsa ucm package as an example, note the [sources](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L6-L7) in the spec file and where they are [installed](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L21-L22) and manually do the same. Alsa 1.2.6 and above put these files in a conf.d directory. For older versions you'll probably need to move them one directory up.
 
 If you would like to provide these packages in an AUR, PPA, or similar repo for other distributions for yourself and others please let me know and I will add them to the instructions.
