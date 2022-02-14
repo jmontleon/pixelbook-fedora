@@ -85,9 +85,9 @@ Summary: The Linux kernel
 # Set debugbuildsenabled to 0 to not build a separate debug kernel, but
 #  to build the base kernel using the debug configuration. (Specifying
 #  the --with-release option overrides this setting.)
-%define debugbuildsenabled 0
+%define debugbuildsenabled 1
 
-%global distro_build 0.rc3.20220211gitf1baf68e1383.93
+%global distro_build 0.rc4.96
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.17.0
 %define patchversion 5.17
-%define pkgrelease 0.rc3.20220211gitf1baf68e1383.93
+%define pkgrelease 0.rc4.96
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc3.20220211gitf1baf68e1383.94.pixelbook%{?buildid}%{?dist}
+%define specrelease 0.rc4.97.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17-rc3-116-gf1baf68e1383.tar.xz
+Source0: linux-5.17-rc4.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -857,7 +857,7 @@ Source4001: rpminspect.yaml
 Source4002: gating.yaml
 
 ## Patches needed for building this package
-Patch0: reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
+
 %if !%{nopatches}
 
 Patch1: patch-%{patchversion}-redhat.patch
@@ -1391,12 +1391,12 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17-rc3-116-gf1baf68e1383 -c
-mv linux-5.17-rc3-116-gf1baf68e1383 linux-%{KVERREL}
+%setup -q -n kernel-5.17-rc4 -c
+mv linux-5.17-rc4 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
-ApplyOptionalPatch reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
+
 %if !%{nopatches}
 
 ApplyOptionalPatch patch-%{patchversion}-redhat.patch
@@ -3005,9 +3005,15 @@ fi
 #
 #
 %changelog
-* Fri Feb 11 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc3.f1baf68e1383.93]
+* Mon Feb 14 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc4.96]
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
 - Workaround for gcc12 compile issues in ubcmd-util.h (Justin M. Forbes)
+
+* Sun Feb 13 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc3.b81b1829e7e3.94]
+- redhat: fix make {distg-brew,distg-koji} (Andrea Claudi)
+
+* Sat Feb 12 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc3.83e396641110.93]
+- [fedora] Turn on CONFIG_VIDEO_OV5693 for sensor support (Dave Olsthoorn)
 
 * Fri Feb 11 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc3.f1baf68e1383.92]
 - Cleanup 'disabled' config options for RHEL (Prarit Bhargava)
