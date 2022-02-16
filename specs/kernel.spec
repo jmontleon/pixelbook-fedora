@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.16
 
-%define rpmversion 5.16.9
+%define rpmversion 5.16.10
 %define patchversion 5.16
 %define pkgrelease 200
 
@@ -692,7 +692,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.16.9.tar.xz
+Source0: linux-5.16.10.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1386,8 +1386,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.16.9 -c
-mv linux-5.16.9 linux-%{KVERREL}
+%setup -q -n kernel-5.16.10 -c
+mv linux-5.16.10 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2986,6 +2986,14 @@ fi
 #
 #
 %changelog
+* Wed Feb 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.10-200]
+- New configs for 5.16.10 (Justin M. Forbes)
+
+* Wed Feb 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.10-0]
+- Revert "x86/PCI: Ignore E820 reservations for bridge windows on newer systems" (Justin M. Forbes)
+- usb: gadget: clear related members when goto fail (Hangyu Hua)
+- usb: gadget: don't release an existing dev->buf (Hangyu Hua)
+
 * Fri Feb 11 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.9-0]
 - tipc: improve size validations for received domain records (Jon Maloy)
 
