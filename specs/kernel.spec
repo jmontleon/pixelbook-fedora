@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 0.rc4.96
+%global distro_build 0.rc5.102
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.17.0
 %define patchversion 5.17
-%define pkgrelease 0.rc4.96
+%define pkgrelease 0.rc5.102
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc4.97.pixelbook%{?buildid}%{?dist}
+%define specrelease 0.rc5.103.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17-rc4.tar.xz
+Source0: linux-5.17-rc5.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1391,8 +1391,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17-rc4 -c
-mv linux-5.17-rc4 linux-%{KVERREL}
+%setup -q -n kernel-5.17-rc5 -c
+mv linux-5.17-rc5 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -3005,9 +3005,15 @@ fi
 #
 #
 %changelog
-* Mon Feb 14 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc4.96]
+* Mon Feb 21 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.102]
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
-- Workaround for gcc12 compile issues in ubcmd-util.h (Justin M. Forbes)
+
+* Fri Feb 18 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc4.9195e5e0adbb.99]
+- redhat: configs: Disable team driver (Hangbin Liu) [1945477]
+
+* Thu Feb 17 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc4.f71077a4d84b.98]
+- configs: enable LOGITECH_FF for RHEL/CentOS too (Benjamin Tissoires)
+- redhat/configs: Disable CONFIG_SENSORS_NCT6683 in RHEL for arm/aarch64 (Dean Nelson) [2041186]
 
 * Sun Feb 13 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc3.b81b1829e7e3.94]
 - redhat: fix make {distg-brew,distg-koji} (Andrea Claudi)
