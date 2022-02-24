@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.16
 
-%define rpmversion 5.16.10
+%define rpmversion 5.16.11
 %define patchversion 5.16
 %define pkgrelease 200
 
@@ -692,7 +692,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.16.10.tar.xz
+Source0: linux-5.16.11.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1386,8 +1386,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.16.10 -c
-mv linux-5.16.10 linux-%{KVERREL}
+%setup -q -n kernel-5.16.11 -c
+mv linux-5.16.11 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -1946,12 +1946,11 @@ BuildKernel() {
     # Clean up intermediate tools files
     find $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/tools \( -iname "*.o" -o -iname "*.cmd" \) -exec rm -f {} +
 
-    # Make sure the Makefile and version.h have a matching timestamp so that
-    # external modules can be built
-    touch -r $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/Makefile $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/include/generated/uapi/linux/version.h
-
-    # Copy .config to include/config/auto.conf so "make prepare" is unnecessary.
-    cp $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/.config $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/include/config/auto.conf
+    # Make sure the Makefile, version.h, and auto.conf have a matching
+    # timestamp so that external modules can be built
+    touch -r $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/Makefile \
+        $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/include/generated/uapi/linux/version.h \
+        $RPM_BUILD_ROOT/lib/modules/$KernelVer/build/include/config/auto.conf
 
 %if %{with_debuginfo}
     eu-readelf -n vmlinux | grep "Build ID" | awk '{print $NF}' > vmlinux.id
@@ -2986,7 +2985,8 @@ fi
 #
 #
 %changelog
-* Wed Feb 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.10-200]
+* Wed Feb 23 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.11-0]
+- spec: don't overwrite auto.conf with .config (Ondrej Mosnacek)
 - New configs for 5.16.10 (Justin M. Forbes)
 
 * Wed Feb 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.10-0]
