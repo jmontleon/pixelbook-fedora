@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 0.rc5.102
+%global distro_build 0.rc7.116
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.17.0
 %define patchversion 5.17
-%define pkgrelease 0.rc5.102
+%define pkgrelease 0.rc7.116
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc5.103.pixelbook%{?buildid}%{?dist}
+%define specrelease 0.rc7.117.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17-rc5.tar.xz
+Source0: linux-5.17-rc7.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1391,8 +1391,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17-rc5 -c
-mv linux-5.17-rc5 linux-%{KVERREL}
+%setup -q -n kernel-5.17-rc7 -c
+mv linux-5.17-rc7 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -3005,8 +3005,53 @@ fi
 #
 #
 %changelog
-* Mon Feb 21 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.102]
+* Mon Mar 07 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc7.116]
+- redhat/configs/build_configs.sh: Parallelize execution (Prarit Bhargava)
+- redhat/configs/build_configs.sh: Provide better messages (Prarit Bhargava)
+- redhat/configs/build_configs.sh: Create unique output files (Prarit Bhargava)
+- redhat/configs/build_configs.sh: Add local variables (Prarit Bhargava)
+- redhat/configs/process_configs.sh: Parallelize execution (Prarit Bhargava)
+- redhat/configs/process_configs.sh: Provide better messages (Prarit Bhargava)
+- redhat/configs/process_configs.sh: Create unique output files (Prarit Bhargava)
+- redhat/configs/process_configs.sh: Add processing config function (Prarit Bhargava)
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
+
+* Sat Mar 05 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc6.ac84e82f78cb.113]
+- Add rebase note for 5.17 on Fedora stable (Justin M. Forbes)
+- More Fedora config updates for 5.17 (Justin M. Forbes)
+
+* Thu Mar 03 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc6.5859a2b19911.111]
+- redhat/configs: Disable CONFIG_MACINTOSH_DRIVERS in RHEL. (Prarit Bhargava)
+
+* Wed Mar 02 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc6.fb184c4af9b9.110]
+- redhat: Fix "make dist-release-finish" to use the correct NVR variables (Neal Gompa) [2053836]
+
+* Tue Mar 01 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc6.719fce7539cd.109]
+- Build CROS_EC Modules (Jason Montleon)
+
+* Mon Feb 28 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc6.108]
+- redhat: configs: change aarch64 default dma domain to lazy (Jerry Snitselaar)
+- redhat: configs: disable ATM protocols (Davide Caratti)
+
+* Sat Feb 26 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.9137eda53752.106]
+- configs/fedora: Enable the interconnect SC7180 driver built-in (Enric Balletbo i Serra)
+
+* Fri Feb 25 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.53ab78cd6d5a.105]
+- configs: clean up CONFIG_PAGE_TABLE_ISOLATION files (Ondrej Mosnacek)
+- redhat: configs: enable CONFIG_INTEL_PCH_THERMAL for RHEL x86 (David Arcari)
+- redhat/Makefile: Fix dist-dump-variables target (Prarit Bhargava)
+- redhat/configs: Enable DEV_DAX and DEV_DAX_PMEM modules on aarch64 for fedora (D Scott Phillips)
+- redhat/configs: Enable CONFIG_TRANSPARENT_HUGEPAGE on aarch64 for fedora (D Scott Phillips)
+
+* Thu Feb 24 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.23d04328444a.104]
+- configs/process_configs.sh: Remove orig files (Prarit Bhargava)
+
+* Wed Feb 23 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.5c1ee569660d.103]
+- redhat: configs: Disable CONFIG_MPLS for s390x/zfcpdump (Guillaume Nault)
+- Fedora 5.17 configs round 1 (Justin M. Forbes)
+
+* Tue Feb 22 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc5.038101e6b2cd.102]
+- redhat: configs: disable the surface platform (David Arcari)
 
 * Fri Feb 18 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc4.9195e5e0adbb.99]
 - redhat: configs: Disable team driver (Hangbin Liu) [1945477]
