@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 200
+%global distro_build 201
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.16.15
 %define patchversion 5.16
-%define pkgrelease 200
+%define pkgrelease 201
 
 # This is needed to do merge window version magic
 %define patchlevel 16
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 201.pixelbook%{?buildid}%{?dist}
+%define specrelease 202.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -2985,6 +2985,9 @@ fi
 #
 #
 %changelog
+* Thu Mar 17 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.15-1]
+- Back out the nfs workaround and just revert the query for fs_location (Justin M. Forbes)
+
 * Wed Mar 16 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.16.15-0]
 - nfc: st21nfca: Fix potential buffer overflows in EVT_TRANSACTION (Jordy Zomer)
 - Restrict FS_LOCATIONS to NFS v4.2+ to work around Qnap knfsd-3.4.6 bug (Justin M. Forbes)
