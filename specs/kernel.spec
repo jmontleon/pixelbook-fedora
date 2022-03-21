@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 0.rc8.123
+%global distro_build 128
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.17.0
 %define patchversion 5.17
-%define pkgrelease 0.rc8.123
+%define pkgrelease 128
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 0.rc8.124.pixelbook%{?buildid}%{?dist}
+%define specrelease 129.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17-rc8.tar.xz
+Source0: linux-5.17.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1391,8 +1391,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17-rc8 -c
-mv linux-5.17-rc8 linux-%{KVERREL}
+%setup -q -n kernel-5.17 -c
+mv linux-5.17 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -2684,9 +2684,20 @@ fi\
 %define kernel_modules_post() \
 %{expand:%%post %{?1:%{1}-}modules}\
 /sbin/depmod -a %{KVERREL}%{?1:+%{1}}\
+if [ ! -f %{_localstatedir}/lib/rpm-state/%{name}/installing_core_%{KVERREL}%{?1:+%{1}} ]; then\
+	mkdir -p %{_localstatedir}/lib/rpm-state/%{name}\
+	touch %{_localstatedir}/lib/rpm-state/%{name}/need_to_run_dracut_%{KVERREL}%{?1:+%{1}}\
+fi\
 %{nil}\
 %{expand:%%postun %{?1:%{1}-}modules}\
 /sbin/depmod -a %{KVERREL}%{?1:+%{1}}\
+%{nil}\
+%{expand:%%posttrans %{?1:%{1}-}modules}\
+if [ -f %{_localstatedir}/lib/rpm-state/%{name}/need_to_run_dracut_%{KVERREL}%{?1:+%{1}} ]; then\
+	rm -f %{_localstatedir}/lib/rpm-state/%{name}/need_to_run_dracut_%{KVERREL}%{?1:+%{1}}\
+	echo "Running: dracut -f --kver %{KVERREL}%{?1:+%{1}}"\
+	dracut -f --kver "%{KVERREL}%{?1:+%{1}}" || exit $?\
+fi\
 %{nil}
 
 # This macro defines a %%posttrans script for a kernel package.
@@ -2701,6 +2712,7 @@ then\
     %{_sbindir}/weak-modules --add-kernel %{KVERREL}%{?1:+%{1}} || exit $?\
 fi\
 %endif\
+rm -f %{_localstatedir}/lib/rpm-state/%{name}/installing_core_%{KVERREL}%{?1:+%{1}}\
 /bin/kernel-install add %{KVERREL}%{?1:+%{1}} /lib/modules/%{KVERREL}%{?1:+%{1}}/vmlinuz || exit $?\
 %{nil}
 
@@ -2721,6 +2733,8 @@ if [ `uname -i` == "x86_64" -o `uname -i` == "i386" ] &&\
    [ -f /etc/sysconfig/kernel ]; then\
   /bin/sed -r -i -e 's/^DEFAULTKERNEL=%{-r*}$/DEFAULTKERNEL=kernel%{?-v:-%{-v*}}/' /etc/sysconfig/kernel || exit $?\
 fi}\
+mkdir -p %{_localstatedir}/lib/rpm-state/%{name}\
+touch %{_localstatedir}/lib/rpm-state/%{name}/installing_core_%{KVERREL}%{?1:+%{1}}\
 %{nil}
 
 #
@@ -3005,8 +3019,42 @@ fi
 #
 #
 %changelog
-* Mon Mar 14 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc8.123]
+* Mon Mar 21 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-127]
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
+
+* Sat Mar 19 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc8.34e047aa16c0.124]
+- Enable net reference count trackers in all debug kernels (Jiri Benc)
+- redhat/Makefile: Reorganize variables (Prarit Bhargava)
+- redhat/Makefile: Add some descriptions (Prarit Bhargava)
+- redhat/Makefile: Move SNAPSHOT check (Prarit Bhargava)
+- redhat/Makefile: Deprecate BREW_FLAGS, KOJI_FLAGS, and TEST_FLAGS (Prarit Bhargava)
+- redhat/genspec.sh: Rework RPMVERSION variable (Prarit Bhargava)
+- redhat/Makefile: Remove dead comment (Prarit Bhargava)
+- redhat/Makefile: Cleanup KABI* variables. (Prarit Bhargava)
+- redhat/Makefile.variables: Default RHGITCOMMIT to HEAD (Prarit Bhargava)
+- redhat/scripts/create-tarball.sh: Use Makefile TARBALL variable (Prarit Bhargava)
+- redhat/Makefile: Remove extra DIST_BRANCH (Prarit Bhargava)
+- redhat/Makefile: Remove STAMP_VERSION (Prarit Bhargava)
+- redhat/Makefile: Move NO_CONFIGCHECKS to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Move RHJOBS to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Move RHGIT* variables to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Move PREBUILD_GIT_ONLY to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Move BUILD to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Move BUILD_FLAGS to Makefile.variables. (Prarit Bhargava)
+- redhat/Makefile: Move BUILD_PROFILE to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Move BUILD_TARGET and BUILD_SCRATCH_TARGET to Makefile.variables (Prarit Bhargava)
+- redhat/Makefile: Remove RHPRODUCT variable (Prarit Bhargava)
+- redhat/Makefile: Cleanup DISTRO variable (Prarit Bhargava)
+- redhat/Makefile: Move HEAD to Makefile.variables. (Prarit Bhargava)
+- redhat: Combine Makefile and Makefile.common (Prarit Bhargava)
+- redhat/koji/Makefile: Decouple koji Makefile from Makefile.common (Prarit Bhargava)
+
+* Fri Mar 18 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc8.551acdc3c3d2.124]
+- Set CONFIG_SND_SOC_SOF_MT8195 for Fedora and turn on VDPA_SIM_BLOCK (Justin M. Forbes)
+
+* Wed Mar 16 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc8.56e337f2cf13.123]
+- Add asus_wmi_sensors modules to filters for Fedora (Justin M. Forbes)
+- redhat: spec: trigger dracut when modules are installed separately (Jan Stancek)
 
 * Sat Mar 12 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc7.68453767131a.120]
 - Last of the Fedora 5.17 configs initial pass (Justin M. Forbes)
