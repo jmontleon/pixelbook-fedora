@@ -4,8 +4,8 @@
  %define patchlevel 16
  
  # allow pkg_release to have configurable %%{?dist} tag
--%define specrelease 200%{?buildid}%{?dist}
-+%define specrelease 201.pixelbook%{?buildid}%{?dist}
+-%define specrelease 300%{?buildid}%{?dist}
++%define specrelease 301.pixelbook%{?buildid}%{?dist}
  
  %define pkg_release %{specrelease}
  

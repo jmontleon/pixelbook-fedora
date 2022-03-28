@@ -77,7 +77,7 @@ Summary: The Linux kernel
 #  kernel release. (This includes prepatch or "rc" releases.)
 # Set released_kernel to 0 when the upstream source tarball contains an
 #  unreleased kernel development snapshot.
-%global released_kernel 0
+%global released_kernel 1
 
 # Set debugbuildsenabled to 1 to build separate base and debug kernels
 #  (on supported architectures). The kernel-debug-* subpackages will
@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 128
+%global distro_build 300
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.17.0
 %define patchversion 5.17
-%define pkgrelease 128
+%define pkgrelease 300
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 129.pixelbook%{?buildid}%{?dist}
+%define specrelease 301.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -185,7 +185,7 @@ Summary: The Linux kernel
 # Only build the debug kernel (--with dbgonly):
 %define with_dbgonly   %{?_with_dbgonly:      1} %{?!_with_dbgonly:      0}
 # Control whether we perform a compat. check against published ABI.
-%define with_kabichk   %{?_without_kabichk:   0} %{?!_without_kabichk:   1}
+#%define with_kabichk   %{?_without_kabichk:   0} %{?!_without_kabichk:   1}
 # Temporarily disable kabi checks until RC.
 %define with_kabichk 0
 # Control whether we perform a compat. check against DUP ABI.
@@ -3019,8 +3019,14 @@ fi
 #
 #
 %changelog
-* Mon Mar 21 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-127]
+* Wed Mar 23 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17-300]
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
+- Turn on RANDOM_TRUST_BOOTLOADER (Justin M. Forbes)
+- Revert "PCI/MSI: Mask MSI-X vectors only on success" (Justin M. Forbes)
+- Define SNAPSHOT correctly for VERSION_ON_UPSTREAM=0 (Justin M. Forbes)
+- Config fixups after some RHEL specific patches were reverted (Justin M. Forbes)
+- Basic Fedora Branch setup (Justin M. Forbes)
+- Reset Makefile.rhelver for the 5.18 cycle (Justin M. Forbes)
 
 * Sat Mar 19 2022 Fedora Kernel Team <kernel-team@fedoraproject.org> [5.17-0.rc8.34e047aa16c0.124]
 - Enable net reference count trackers in all debug kernels (Jiri Benc)
