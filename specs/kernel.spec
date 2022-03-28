@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.17
 
-%define rpmversion 5.17.0
+%define rpmversion 5.17.1
 %define patchversion 5.17
 %define pkgrelease 300
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17.tar.xz
+Source0: linux-5.17.1.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1391,8 +1391,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17 -c
-mv linux-5.17 linux-%{KVERREL}
+%setup -q -n kernel-5.17.1 -c
+mv linux-5.17.1 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -3019,7 +3019,10 @@ fi
 #
 #
 %changelog
-* Wed Mar 23 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17-300]
+* Mon Mar 28 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17-0]
+- Revert "swiotlb: rework "fix info leak with DMA_FROM_DEVICE"" (Linus Torvalds)
+- drm/i915: Temporarily disable selective fetch for PSR2 on ADL-P (Lyude Paul) [2065794]
+- Fix RHDISTGIT for Fedora (Justin M. Forbes)
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
 - Turn on RANDOM_TRUST_BOOTLOADER (Justin M. Forbes)
 - Revert "PCI/MSI: Mask MSI-X vectors only on success" (Justin M. Forbes)
