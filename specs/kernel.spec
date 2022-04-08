@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.17
 
-%define rpmversion 5.17.1
+%define rpmversion 5.17.2
 %define patchversion 5.17
 %define pkgrelease 300
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17.1.tar.xz
+Source0: linux-5.17.2.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -775,7 +775,6 @@ Source33: kernel-x86_64-debug-rhel.config
 
 Source34: filter-x86_64.sh.rhel
 Source35: filter-armv7hl.sh.rhel
-Source36: filter-i686.sh.rhel
 Source37: filter-aarch64.sh.rhel
 Source38: filter-ppc64le.sh.rhel
 Source39: filter-s390x.sh.rhel
@@ -794,8 +793,6 @@ Source54: kernel-armv7hl-fedora.config
 Source55: kernel-armv7hl-debug-fedora.config
 Source56: kernel-armv7hl-lpae-fedora.config
 Source57: kernel-armv7hl-lpae-debug-fedora.config
-Source58: kernel-i686-fedora.config
-Source59: kernel-i686-debug-fedora.config
 Source60: kernel-ppc64le-fedora.config
 Source61: kernel-ppc64le-debug-fedora.config
 Source62: kernel-s390x-fedora.config
@@ -805,7 +802,6 @@ Source65: kernel-x86_64-debug-fedora.config
 
 Source67: filter-x86_64.sh.fedora
 Source68: filter-armv7hl.sh.fedora
-Source69: filter-i686.sh.fedora
 Source70: filter-aarch64.sh.fedora
 Source71: filter-ppc64le.sh.fedora
 Source72: filter-s390x.sh.fedora
@@ -1391,8 +1387,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17.1 -c
-mv linux-5.17.1 linux-%{KVERREL}
+%setup -q -n kernel-5.17.2 -c
+mv linux-5.17.2 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -3019,10 +3015,35 @@ fi
 #
 #
 %changelog
-* Mon Mar 28 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17-0]
+* Fri Apr 08 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.2-0]
+- Move the patch to the redhat directory so it doesn't end up as an applied patch (Justin M. Forbes)
+- Config updates for 5.17.2 (Justin M. Forbes)
+- Fedora: arm: Updates for QCom devices (Peter Robinson)
+- Fedora arm and generic updates for 5.17 (Peter Robinson)
+- enable COMMON_CLK_SI5341 for Xilinx ZYNQ-MP (Peter Robinson)
+- Update Fix 'mem_section' will never be NULL gcc 12 warning to V4 (Justin M. Forbes)
+- NFSv4.1 provide mount option to toggle trunking discovery (Olga Kornievskaia)
+- Add the Revert patch so that it can be applied when building dist-git for F34 and F35 (Justin M. Forbes)
+- redhat/configs/process_configs.sh: Avoid race with find (Prarit Bhargava)
+- redhat/configs/process_configs.sh: Remove CONTINUEONERROR (Prarit Bhargava)
+- redhat/configs/process_configs.sh: Fix race with tools generation (Prarit Bhargava)
+- Bluetooth: hci_core: Rate limit the logging of invalid SCO handle (Luiz Augusto von Dentz)
+- Bluetooth: hci_event: Fix HCI_EV_VENDOR max_len (Luiz Augusto von Dentz)
+- Update mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 (Justin M. Forbes)
+- net: bcmgenet: Use stronger register read/writes to assure ordering (Jeremy Linton)
+- We actually needed the previous patch from os-build (Justin M. Forbes)
+- redhat: Fix release tagging (Prarit Bhargava)
+- Fix up changelog generation for stable releases (Justin M. Forbes)
+- Remove i686 configs and filters (Justin M. Forbes)
+- redhat/self-test: Fix shellcheck test (Prarit Bhargava)
+- redhat/configs: Set CONFIG_X86_AMD_PSTATE built-in on Fedora (Prarit Bhargava)
+
+* Mon Mar 28 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.1-300]
 - Revert "swiotlb: rework "fix info leak with DMA_FROM_DEVICE"" (Linus Torvalds)
 - drm/i915: Temporarily disable selective fetch for PSR2 on ADL-P (Lyude Paul) [2065794]
 - Fix RHDISTGIT for Fedora (Justin M. Forbes)
+
+* Wed Mar 23 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.0-300]
 - mm/sparsemem: Fix 'mem_section' will never be NULL gcc 12 warning (Waiman Long)
 - Turn on RANDOM_TRUST_BOOTLOADER (Justin M. Forbes)
 - Revert "PCI/MSI: Mask MSI-X vectors only on success" (Justin M. Forbes)
