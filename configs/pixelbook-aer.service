@@ -1,0 +1,12 @@
+[Unit]
+Description=Fix for Pixelbook's excessive AER logging
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+# Change your device and vendor (or bus/slot/function accordingly)
+ExecStart=/usr/sbin/setpci -v -d 8086:9d10 CAP_EXP+0x8.w=0xe
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

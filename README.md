@@ -123,6 +123,11 @@ If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To 
 1. Configure `/usr/bin/pixelbook-touchscreen-click` to run automatically at login 
 1. Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
 
+## Excessive AER logging
+Watching journalctl you'll note lots of logging about AER corrections. The pixelbook-aer package contains a workaround for this.
+1. `sudo dnf -y install pixelbook-aer`
+1. `sudo systemctl enable --now pixelbook-aer`
+
 # Troubleshooting.
 Occasionally when booting after making several changes users have observed oddities including sound continuing to fail the mouse not working. If this happens, the problem is often remedied by rebooting.  
 

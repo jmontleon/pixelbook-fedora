@@ -158,6 +158,7 @@
         - pixelbook-scripts
         - pixelbook-touchpad-tweak
         - pixelbook-udev
+        - pixelbook-aer
         - xdotool
         state: present
 
@@ -182,6 +183,13 @@
       systemd:
         name: acpid
         state: restarted
+        enabled: yes
+
+    - name: Enable AER fix
+      become: true
+      systemd:
+        name: pixelbook-aer
+        state: started
         enabled: yes
 
     always:
