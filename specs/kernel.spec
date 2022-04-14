@@ -130,7 +130,7 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.17
 
-%define rpmversion 5.17.2
+%define rpmversion 5.17.3
 %define patchversion 5.17
 %define pkgrelease 300
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17.2.tar.xz
+Source0: linux-5.17.3.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1387,8 +1387,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17.2 -c
-mv linux-5.17.2 linux-%{KVERREL}
+%setup -q -n kernel-5.17.3 -c
+mv linux-5.17.3 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -3015,6 +3015,11 @@ fi
 #
 #
 %changelog
+* Wed Apr 13 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.3-0]
+- ALSA: memalloc: Add fallback SG-buffer allocations for x86 (Takashi Iwai)
+- Turn AMD_PSTATE back to module so users can choose (Justin M. Forbes)
+- drm/i915: update new TMDS clock setting defined by VBT (Lee Shawn C)
+
 * Fri Apr 08 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.2-0]
 - Move the patch to the redhat directory so it doesn't end up as an applied patch (Justin M. Forbes)
 - Config updates for 5.17.2 (Justin M. Forbes)
