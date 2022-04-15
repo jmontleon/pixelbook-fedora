@@ -32,7 +32,7 @@ What works and doesn't work:
 
 ## Install Coreboot
 1. All of the instructions for this process are at [mrchromebox.tech](https://mrchromebox.tech)
-1. You must open the clode-case debugging capabilities, disable write protect, and enable firmware flashing.
+1. You must configure [Closed Case Debug](https://chromium.googlesource.com/chromiumos/third_party/hdctools/+/HEAD/docs/ccd.md), disable write protect, and enable firmware flashing.
 1. To do all of this read, understand, and follow these [instructions](https://mrchromebox.tech/#devices).
 1. Then use the [Firmware Utility Script](https://mrchromebox.tech/#fwscript) to install the UEFI firmware.
 1. Do make a backup of the stock firmware and **ensure you do not lose it**.
