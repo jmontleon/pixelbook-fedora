@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 300
+%global distro_build 302
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -132,13 +132,13 @@ Summary: The Linux kernel
 
 %define rpmversion 5.17.3
 %define patchversion 5.17
-%define pkgrelease 300
+%define pkgrelease 302
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 301.pixelbook%{?buildid}%{?dist}
+%define specrelease 303.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -3015,6 +3015,9 @@ fi
 #
 #
 %changelog
+* Sun Apr 17 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.3-302]
+- Revert "net: bcmgenet: Use stronger register read/writes to assure ordering" (Justin M. Forbes)
+
 * Wed Apr 13 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.3-0]
 - ALSA: memalloc: Add fallback SG-buffer allocations for x86 (Takashi Iwai)
 - Turn AMD_PSTATE back to module so users can choose (Justin M. Forbes)
