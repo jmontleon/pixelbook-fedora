@@ -4,26 +4,8 @@
  %define patchlevel 16
  
  # allow pkg_release to have configurable %%{?dist} tag
--%define specrelease 200%{?buildid}%{?dist}
-+%define specrelease 201.pixelbook%{?buildid}%{?dist}
+-%define specrelease 300%{?buildid}%{?dist}
++%define specrelease 301.pixelbook%{?buildid}%{?dist}
  
  %define pkg_release %{specrelease}
  
-@@ -853,7 +853,7 @@
- Source4002: gating.yaml
- 
- ## Patches needed for building this package
--
-+Patch0: reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
- %if !%{nopatches}
- 
- Patch1: patch-%{patchversion}-redhat.patch
-@@ -1391,7 +1391,7 @@
- 
- cd linux-%{KVERREL}
- cp -a %{SOURCE1} .
--
-+ApplyOptionalPatch reversed-ASoC-Intel-Skylake-Select-proper-format-for-NHLT-blob.patch
- %if !%{nopatches}
- 
- ApplyOptionalPatch patch-%{patchversion}-redhat.patch
