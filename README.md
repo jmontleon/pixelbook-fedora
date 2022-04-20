@@ -19,7 +19,7 @@ What works and doesn't work:
 | Wireless | Working |
 
 ## Required Hardware
-- Google Pixelbook
+- Google Pixelbook (2017)
 - [SuzyQable](https://www.sparkfun.com/products/14746)
 - A second computer or a USB A to USB C adapter so you can plug the other end into the Pixelbook itself
 
@@ -41,7 +41,9 @@ What works and doesn't work:
 ## Update Coreboot
 If you followed the instructions above you should be all set.  
   
-If you skipped the instructions above because coreboot was already installed please ensure it is up to date. At least one [trace](https://github.com/jmontleon/pixelbook-fedora/issues/5#issuecomment-985623474) in dmesg was resolved by a firmware update.   
+If you skipped the instructions above because coreboot was already installed please ensure it is up to date. At least one [trace](https://github.com/jmontleon/pixelbook-fedora/issues/5#issuecomment-985623474) in dmesg was resolved by a firmware update.  
+  
+You may also encounter a [bug](https://bugzilla.kernel.org/show_bug.cgi?id=215269) that causes slow boots and hangs on shutdown if running coreboot versions prior to 4.16, which contains this [fix](https://review.coreboot.org/c/coreboot/+/61262).
 
 ## Install Fedora
 1. Prepare a bootable [Fedora USB stick](https://fedoramagazine.org/make-fedora-usb-stick/)
