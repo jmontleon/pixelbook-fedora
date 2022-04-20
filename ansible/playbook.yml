@@ -92,9 +92,15 @@
       set_fact:
         loop_device: "{{ kpartx.stdout_lines[2].split(' ')[2] }}"
 
+    - name: Create chromeos recovery image mount point directory
+      file:
+        state: directory
+        path: /mnt/chromeos_recovery_image
+      become: true
+
     - name: Mount recovery image
       mount:
-        path: /mnt
+        path: /mnt/chromeos_recovery_image
         src: "/dev/mapper/{{ loop_device }}"
         fstype: ext2
         opts: ro
@@ -111,13 +117,13 @@
 
     - name: Copy dsmparam.bin
       copy:
-        src: /mnt/opt/google/dsm/dsmparam.bin
+        src: /mnt/chromeos_recovery_image/opt/google/dsm/dsmparam.bin
         dest: /opt/google/dsm/dsmparam.bin
       become: true
 
     - name: Copy firmware files
       copy:
-        src: "/mnt/lib/firmware/{{ item }}"
+        src: "/mnt/chromeos_recovery_image/lib/firmware/{{ item }}"
         dest: "/lib/firmware/{{ item }}"
         remote_src: true
       become: true
@@ -195,7 +201,7 @@
     always:
     - name: Unmount recovery image
       mount:
-        path: /mnt
+        path: /mnt/chromeos_recovery_image
         src: "/dev/mapper/{{ loop_device }}"
         opts: ro
         state: absent
