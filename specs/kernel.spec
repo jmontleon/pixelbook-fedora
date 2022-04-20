@@ -87,7 +87,7 @@ Summary: The Linux kernel
 #  the --with-release option overrides this setting.)
 %define debugbuildsenabled 1
 
-%global distro_build 302
+%global distro_build 300
 
 %if 0%{?fedora}
 %define secure_boot_arch x86_64
@@ -130,15 +130,15 @@ Summary: The Linux kernel
 # The kernel tarball/base version
 %define kversion 5.17
 
-%define rpmversion 5.17.3
+%define rpmversion 5.17.4
 %define patchversion 5.17
-%define pkgrelease 302
+%define pkgrelease 300
 
 # This is needed to do merge window version magic
 %define patchlevel 17
 
 # allow pkg_release to have configurable %%{?dist} tag
-%define specrelease 303.pixelbook%{?buildid}%{?dist}
+%define specrelease 301.pixelbook%{?buildid}%{?dist}
 
 %define pkg_release %{specrelease}
 
@@ -695,7 +695,7 @@ BuildRequires: lld
 # exact git commit you can run
 #
 # xzcat -qq ${TARBALL} | git get-tar-commit-id
-Source0: linux-5.17.3.tar.xz
+Source0: linux-5.17.4.tar.xz
 
 Source1: Makefile.rhelver
 
@@ -1387,8 +1387,8 @@ ApplyOptionalPatch()
   fi
 }
 
-%setup -q -n kernel-5.17.3 -c
-mv linux-5.17.3 linux-%{KVERREL}
+%setup -q -n kernel-5.17.4 -c
+mv linux-5.17.4 linux-%{KVERREL}
 
 cd linux-%{KVERREL}
 cp -a %{SOURCE1} .
@@ -3015,7 +3015,8 @@ fi
 #
 #
 %changelog
-* Sun Apr 17 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.3-302]
+* Wed Apr 20 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.4-0]
+- Add F34 and F35 as release targets (Justin M. Forbes)
 - Revert "net: bcmgenet: Use stronger register read/writes to assure ordering" (Justin M. Forbes)
 
 * Wed Apr 13 2022 Justin M. Forbes <jforbes@fedoraproject.org> [5.17.3-0]
