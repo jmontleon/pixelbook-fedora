@@ -6,7 +6,7 @@ What works and doesn't work:
 
 | Component     | Status      |
 | ------------- |-------------|
-| Ambient Light Sensor | Working |
+| Ambient Light Sensor | Mostly Working [Issue](https://github.com/jmontleon/pixelbook-fedora/issues/18)  |
 | Audio | [Working](#Audio) |
 | Brightness | [Working](#Brightness) |
 | Bluetooth | Working |
@@ -141,8 +141,9 @@ See past issues for examples [1](https://github.com/jmontleon/pixelbook-fedora/i
 # Other distributions
 For the most part nothing in this repo is distribution specific other than the availability of packages to simplify the install process. The primary adjustments you will need to be concerned about are listed below.
 
-1. An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0, so versions in between are not likely to have functioning audio. 5.16.0 introduced fixes to the backlight, and in kernels prior it will not be adjustable. In general 5.17.0 and above should work well.
-1. [kernel-local](https://github.com/jmontleon/pixelbook-fedora/tree/main/kernel/kernel-local) contains a config for the Fedora kernel and [kernel-local](https://github.com/jmontleon/pixelbook-fedora/tree/main/kernel/kernel-config.patch) shows the difference in configuration with the standard Fedora kernel to enable hardware support for the Pixelbook.
-1. The other change you will have to be concerned with is placement of configuration and scripts that are provided with by packages. All sources for the packages (other than the kernel) are provided in the [configs](https://github.com/jmontleon/pixelbook-fedora/tree/main/configs) and [scripts](https://github.com/jmontleon/pixelbook-fedora/tree/main/scripts) directories. When a package is referenced, using the alsa ucm package as an example, note the [sources](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L6-L7) in the spec file and where they are [installed](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L21-L22) and manually do the same. Alsa 1.2.6 and above put these files in a conf.d directory. For older versions you'll probably need to move them one directory up.
+1. An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0. 5.16.0 introduced fixes to the display backlight. In general 5.17.0 and above should work well.
+1. Reference [this PR](https://gitlab.com/cki-project/kernel-ark/-/merge_requests/1616/diffs) to see the kernel options that must be enabled for hardware support.
+1. To match placement of configuration and scripts that are provided by packages look at the corresponding spec file. All sources are located in the [configs](https://github.com/jmontleon/pixelbook-fedora/tree/main/configs) and [scripts](https://github.com/jmontleon/pixelbook-fedora/tree/main/scripts) directories.
+1. When a package is referenced, using the alsa ucm package as an example, note the [sources](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L6-L7) in the spec file and where they are [installed](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L21-L22) and manually do the same. Alsa is a special case in that 1.2.6 and above put these files in a conf.d directory. For older versions you'll probably need to move them one directory up.
 
 If you would like to provide these packages in an AUR, PPA, or similar repo for other distributions for yourself and others please let me know and I will add them to the instructions.
