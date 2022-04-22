@@ -1,0 +1,11 @@
+[Unit]
+Description=Workaround for Pixelbook's touchpad failure on reboot
+
+[Service]
+Type=oneshot
+ExecStart=rmmod i2c_hid_acpi i2c_hid
+ExecStart=modprobe i2c_hid_acpi
+RemainAfterExit=yes
+
+[Install]
+WantedBy=graphical.target

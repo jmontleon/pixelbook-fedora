@@ -112,8 +112,11 @@ In Gnome, to use the Capslock and Super keys run these commands at login or add 
 1. After rebooting screen orientation should work.
 
 ## Touchpad
-If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To disable Tap to Drag you can do one of the following.
+A frequent complaint is that the touchpad does not work after reboot. If you encounter this you can install the pixelbook-touchpad-service as a workaround. This is a service that unloads and loads two kernel modules.
+1. `sudo dnf -y install pixelbook-touchpad-service`
+1. `sudo systemctl enable --now pixelbook-touchpad`
 
+If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To disable Tap to Drag you can do one of the following.
 ### Gnome:
 1. `gsettings set org.gnome.desktop.peripherals.touchpad tap-and-drag false`
 
@@ -132,10 +135,8 @@ Watching journalctl you'll note lots of logging about AER corrections. The pixel
 1. `sudo systemctl enable --now pixelbook-aer`
 
 # Troubleshooting.
-Occasionally when booting after making several changes users have observed oddities including sound continuing to fail the mouse not working. If this happens, the problem is often remedied by rebooting.  
-
-If you continue to have problems verify the configuration and try rebooting by using the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again.  
-
+When rebooting users have observed sound continuing to fail and the mouse not working. If this happens, the problem is often remedied by rebooting via the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again. The touchpad section above contains a service that will mask the problem in the case of the mouse.  
+  
 See past issues for examples [1](https://github.com/jmontleon/pixelbook-fedora/issues/1) and [2](https://github.com/jmontleon/pixelbook-fedora/issues/2)
 
 # Other distributions

@@ -160,11 +160,12 @@
       become: true
       dnf:
         name:
+        - pixelbook-aer
         - pixelbook-alsa-ucm
         - pixelbook-scripts
+        - pixelbook-touchpad-service
         - pixelbook-touchpad-tweak
         - pixelbook-udev
-        - pixelbook-aer
         - xdotool
         state: present
 
@@ -191,12 +192,15 @@
         state: restarted
         enabled: yes
 
-    - name: Enable AER fix
+    - name: Enable pixelbook services
       become: true
       systemd:
-        name: pixelbook-aer
+        name: "{{ item }}"
         state: started
         enabled: yes
+      with_items:
+      - pixelbook-aer
+      - pixelbook-touchpad
 
     always:
     - name: Unmount recovery image
