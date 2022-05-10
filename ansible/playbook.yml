@@ -43,7 +43,7 @@
 
     - name: Get latest recovery image information
       uri:
-        url: https://cros-updates-serving.appspot.com
+        url: https://dl.google.com/dl/edgedl/chromeos/recovery/recovery.conf?source=linux_recovery.sh
         return_content: true
       register: recovery_info
 
