@@ -35,6 +35,18 @@
         dest: /etc/modprobe.d/i915.conf
       become: true
 
+    - name: Add cros_ec_typec blacklist
+      copy:
+        dest: /etc/modprobe.d/cros_ec_typec.conf
+        content: "blacklist cros_ec_typec"
+      become: true
+      register: cros_ec_typec_modprobe
+
+    - name: Update initramfs
+      shell: dracut -f
+      become: true
+      when: cros_ec_typec_modprobe.changed
+
     - name: Update system
       dnf:
         name: "*"
