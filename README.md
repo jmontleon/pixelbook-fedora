@@ -1,6 +1,6 @@
 # Fedora on Pixelbook
 
-This process can be used to get Fedora installed on your Chromebook. This process will destroy your data so make sure you have backups of anything you need. When you're done ChromeOS will not be bootable and your data will be wiped. See the notes below for how to adapt them for [other distrbutions](#other-distributions).
+This process can be used to get Fedora installed on your Chromebook. **This process will destroy your data so make sure you have backups of anything you need. When you're done ChromeOS will not be bootable and your data will be wiped.** See the notes below for how to adapt them for [other distrbutions](#other-distributions).
 
 What works and doesn't work:
 
@@ -18,10 +18,19 @@ What works and doesn't work:
 | Touchscreen | [Working](#Touchscreen) |
 | Wireless | Working |
 
-## Required Hardware
-- Google Pixelbook (2017)
+## Requirements
+- Google Pixelbook (2017) **The steps below will wipe your data and account settings.**
 - [SuzyQable](https://www.sparkfun.com/products/14746)
 - A second computer or a USB A to USB C adapter so you can plug the other end into the Pixelbook itself
+- A willingness to patiently troubleshoot and diagnose issues. This is an advanced task and yields imperfect results. Many desktop environments, display managers, and configurations have not been tested fully, if at all, and may require additional work to make function. Most of the packages, scripts, and configs provided here are workarounds to known issues for which there are currently no proper fix or configuration.
+
+- You should know how to perform these tasks or be ready to google them for troubleshooting purposes if something goes wrong:
+    - Install, remove, and update packages on Fedora
+    - Enable, disable, stop, and (re)start systemd services
+    - Change runlevels using systemd, including from the GRUB menu using the kernel command line
+    - Change display managers and / or desktops to determine if the problem is specific to one or all.
+    - Enable wireless network connections with NetworkManager or systemd-networkd from the shell.
+    - Install, configure, and run playbooks with ansible
 
 ## Unlocking the Pixelbook to install the Coreboot Firmware
 **These steps will wipe your data and account settings. Do not proceed if you need data on your Chromebook.**
@@ -136,7 +145,9 @@ Watching journalctl you'll note lots of logging about AER corrections. The pixel
 # Troubleshooting.
 When rebooting users have observed sound continuing to fail and the mouse not working. If this happens, the problem is often remedied by rebooting via the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again. The touchpad section above contains a service that will mask the problem in the case of the mouse.  
   
-See past issues for examples [1](https://github.com/jmontleon/pixelbook-fedora/issues/1) and [2](https://github.com/jmontleon/pixelbook-fedora/issues/2)
+See past issues for examples [1](https://github.com/jmontleon/pixelbook-fedora/issues/1) and [2](https://github.com/jmontleon/pixelbook-fedora/issues/2)  
+  
+Issues are welcome if you think you found something Pixelbook specific. Full logs, detailed explanations of steps taken, configuration performed, etc. are important. It is impossible to provide help with comments that simply state things aren't working as expected.
 
 # Other distributions
 For the most part nothing in this repo is distribution specific other than the availability of packages to simplify the install process. The primary adjustments you will need to be concerned about are listed below.
