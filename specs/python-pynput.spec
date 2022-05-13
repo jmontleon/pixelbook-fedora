@@ -3,8 +3,8 @@
 %global py3dev python3
 
 Name:       python-%{library}
-Version:    1.7.3
-Release:    3%{?dist}
+Version:    1.7.6
+Release:    1%{?dist}
 Summary:    This library allows you to control and monitor input devices.
 License:    GPL 3.0
 URL:        https://github.com/moses-palmer/pynput
@@ -59,6 +59,9 @@ sphinx-build-3 docs/ html
 %doc html
 
 %changelog
+* Thu May 12 2022 Jason Montleon <jmontleo@redhat.com> - 1.7.6-1
+- Update to 1.7.6
+
 * Sat Jul 24 2021 Jason Montleon <jmontleo@redhat.com> - 1.7.3-3
 - Add missing setuptools-lint build-dep
 
