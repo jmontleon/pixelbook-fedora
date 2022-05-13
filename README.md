@@ -142,6 +142,9 @@ Watching journalctl you'll note lots of logging about AER corrections. The pixel
 1. `sudo dnf -y install pixelbook-aer`
 1. `sudo systemctl enable --now pixelbook-aer`
 
+# Additional packages
+A lot of common software is not available in Fedora, such as nvidia drivers and vlc. Fortunately a plethora of software is available from [RPM Fusion](https://rpmfusion.org/).
+
 # Troubleshooting.
 When rebooting users have observed sound continuing to fail and the mouse not working. If this happens, the problem is often remedied by rebooting via the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again. The touchpad section above contains a service that will mask the problem in the case of the mouse.  
   
