@@ -181,10 +181,10 @@
         - xdotool
         state: present
 
-    - name: Add you to the input group
+    - name: Add you to the input and tty group
       user:
         name: "{{ ansible_user_id }}"
-        groups: input
+        groups: input,tty
         append: yes
       become: true
 
@@ -213,6 +213,18 @@
       with_items:
       - pixelbook-aer
       - pixelbook-touchpad
+
+    - name: Enable pixelbook user services
+      systemd:
+        name: "{{ item }}"
+        scope: user
+        state: started
+        enabled: yes
+      with_items:
+      - pixelbook-acpi
+      - pixelbook-display-orientation
+      - pixelbook-touchscreen-click
+      - pixelbook-keyboard-backlight
 
     always:
     - name: Unmount recovery image

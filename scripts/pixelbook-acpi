@@ -1,0 +1,47 @@
+#!/usr/bin/bash
+if [ -z "$DISPLAY" ]; then
+  exit 0
+fi
+
+acpi_listen > /tmp/acpi.log 2>&1 &
+
+while inotifywait -e modify /tmp/acpi.log; do
+  EVENT=$(tail -n 1 /tmp/acpi.log)
+  if echo "$EVENT" | grep '0000008A'; then
+    if echo "$EVENT" | grep '1$' ; then
+      if [ "$XDG_CURRENT_DESKTOP" == "GNOME" ]; then
+        gsettings set org.gnome.desktop.peripherals.touchpad send-events disabled
+      elif [ "$XDG_CURRENT_DESKTOP" == "KDE" ]; then
+        for i in $(qdbus org.kde.KWin | grep event); do
+	  if [ "$(qdbus org.kde.KWin $i org.freedesktop.DBus.Properties.Get org.kde.KWin.InputDevice name)" == "ACPI0C50:00 18D1:5028" ]; then
+	    qdbus org.kde.KWin $i org.freedesktop.DBus.Properties.Set org.kde.KWin.InputDevice enabled false
+            break
+	  fi
+        done
+      else
+	xinput disable "ACPI0C50:00 18D1:5028"
+      fi
+    else
+      if [ "$XDG_CURRENT_DESKTOP" == "GNOME" ]; then
+        gsettings set org.gnome.desktop.peripherals.touchpad send-events enabled
+      elif [ "$XDG_CURRENT_DESKTOP" == "KDE" ]; then
+        for i in $(qdbus org.kde.KWin | grep event); do
+          if [ "$(qdbus org.kde.KWin $i org.freedesktop.DBus.Properties.Get org.kde.KWin.InputDevice name)" == "ACPI0C50:00 18D1:5028" ]; then
+            qdbus org.kde.KWin $i org.freedesktop.DBus.Properties.Set org.kde.KWin.InputDevice enabled true
+	    break
+          fi
+        done
+      else
+        xinput enable "ACPI0C50:00 18D1:5028"
+      fi
+     fi
+  elif echo "$EVENT" | grep -e 'HEADPHONE' -e 'MICROPHONE'; then
+    if echo "$EVENT" | grep 'unplug$' ; then
+      pactl set-default-sink alsa_output.platform-kbl_r5514_5663_max.HiFi__hw_kblr55145663max_0__sink
+      pactl set-default-source alsa_input.platform-kbl_r5514_5663_max.HiFi__hw_kblr55145663max_4__source
+    else
+      pactl set-default-sink alsa_output.platform-kbl_r5514_5663_max.HiFi__hw_kblr55145663max_2__sink
+      pactl set-default-source alsa_input.platform-kbl_r5514_5663_max.HiFi__hw_kblr55145663max_1__source
+    fi
+  fi
+done

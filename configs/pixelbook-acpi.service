@@ -1,0 +1,11 @@
+[Unit]
+Description=Listen to ACPI events relevant to Pixelbook hardware and act on them0
+
+[Service]
+Type=exec
+ExecStart=/usr/libexec/pixelbook-acpi
+Restart=on-success
+RestartSec=3
+
+[Install]
+WantedBy=default.target

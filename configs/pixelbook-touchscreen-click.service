@@ -1,0 +1,11 @@
+[Unit]
+Description=Pixelbook Touchscreen Click 
+
+[Service]
+Type=exec
+ExecStart=/usr/libexec/pixelbook-touchscreen-click
+Restart=on-success
+RestartSec=3
+
+[Install]
+WantedBy=default.target

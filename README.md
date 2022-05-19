@@ -81,7 +81,8 @@ By default audio will not work at all, but by copying topology and firmware file
     1. `sudo dnf swap wireplumber pipewire-media-session`
     1. `sudo dnf swap pipewire-jack-audio-connection-kit jack-audio-connection-kit`
     1. `sudo dnf remove pipewire-alsa`
-1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm`
+1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm pixelbook-acpi`
+1. `systemctl --user --now enable pixelbook-acpi`
 1. After rebooting you should have audio (Note: Some systems require 2 or occasionally 3 reboots. See the troubleshooting section for details)
 
 ## Brightness
@@ -113,11 +114,10 @@ In Gnome, to use the Capslock and Super keys run these commands at login or add 
 1. `sudo dnf -y install pixelbook-udev pixelbook-scripts`, if you haven't already.
 1. `sudo dnf -y update`, if you haven't already.
 1. `sudo mv /etc/acpi/events/powerconf /etc/acpi/events/powerconf.disabled~` This will prevent the power button from causing an immediate shutdown in Gnome.
-1. `sudo systemctl enable acpid`
-1. Gnome handles screen orientation automatically.
-1. For others a script, `pixelbook-display-orientation`, is available that can be set to start at login. 
-1. Set up `/usr/bin/pixelbook-disable-tablet-touchpad` to run automatically at login to work around the touchpad not turning off automatically in tablet mode in all DE, including Gnome.
-1. After rebooting screen orientation should work.
+1. `sudo systemctl --now enable acpid`
+1. Gnome and KDE handle screen orientation automatically in tablet mode.
+1. For others `systemctl --user --now enable pixelbook-display-orientation`
+1. `systemctl --user --now enable pixelbook-acpi` will listen to tablet mode and audio jack related events and act accordingly
 
 ## Touchpad
 A frequent complaint is that the touchpad does not work after reboot. If you encounter this you can install the pixelbook-touchpad-service as a workaround. This is a service that unloads and loads two kernel modules.
@@ -134,8 +134,8 @@ If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To 
 ## Touchscreen
 1. `sudo dnf -y install pixebolbook-scripts`, if you haven't already.
 1. `sudo usermod -aG input $USER`, if you haven't already
-1. Configure `/usr/bin/pixelbook-touchscreen-click` to run automatically at login 
-1. Reboot and you should be able to click, double click, and right click (two finger tap) using the touchscreen.
+1. `sudo usermod -aG tty $USER`
+1. Gnome and KDE have their own gesture logic. For Xfce and others `systemctl --user --now enable pixelbook-touchscreen-click`
 
 ## Excessive AER logging
 Watching journalctl you'll note lots of logging about AER corrections. The pixelbook-aer package contains a workaround for this.

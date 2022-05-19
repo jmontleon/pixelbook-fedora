@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+import os
+
+if "DISPLAY" not in os.environ or os.environ["DISPLAY"] is None:
+  os._exit(0)
+
 import evdev
 from evdev import InputDevice
 import time
@@ -18,6 +23,9 @@ rlasttime = time.time()
 originaltime = lasttime
 oldclickx = 0
 oldclicky = 0
+
+if os.environ["XDG_CURRENT_DESKTOP"] == "GNOME" or os.environ["XDG_CURRENT_DESKTOP"] == "KDE":
+  subprocess.run(["sleep", "infinity"])
 
 for event in dev.read_loop():
 

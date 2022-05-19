@@ -1,16 +1,20 @@
 Name:       pixelbook-scripts
-Version:    1.0.6
+Version:    1.0.7
 Release:    1%{?dist}
 Summary:    Scripts for interacting with pixelbook backlights and touchpad
 License:    WTFPL
-Source0:    pixelbook-display-backlight
+Source0:    pixelbook-acpi.service
 Source1:    pixelbook-keyboard-backlight
 Source2:    pixelbook-touchscreen-click
 Source3:    pixelbook-display-orientation
-Source4:    pixelbook-disable-tablet-touchpad
+Source4:    pixelbook-acpi
+Source5:    pixelbook-display-orientation.service
+Source6:    pixelbook-touchscreen-click.service
+Source7:    pixelbook-keyboard-backlight.service
 BuildArch:  noarch
 
 Requires: acpid
+Requires: kbd
 Requires: iio-sensor-proxy
 Requires: inotify-tools
 Requires: python3-pynput
@@ -24,18 +28,45 @@ Scripts for interacting with pixelbook backlights and touchpad
 %build
 
 %install
-mkdir -p %{buildroot}%{_bindir}
-install -m 0755 %{SOURCE0} %{buildroot}%{_bindir}/
-install -m 0755 %{SOURCE1} %{buildroot}%{_bindir}/
-install -m 0755 %{SOURCE2} %{buildroot}%{_bindir}/
-install -m 0755 %{SOURCE3} %{buildroot}%{_bindir}/
-install -m 0755 %{SOURCE4} %{buildroot}%{_bindir}/
+mkdir -p %{buildroot}%{_libexecdir}
+mkdir -p %{buildroot}%{_userunitdir}
+install -m 0644 %{SOURCE0} %{buildroot}%{_userunitdir}/
+install -m 0755 %{SOURCE1} %{buildroot}%{_libexecdir}/
+install -m 0755 %{SOURCE2} %{buildroot}%{_libexecdir}/
+install -m 0755 %{SOURCE3} %{buildroot}%{_libexecdir}/
+install -m 0755 %{SOURCE4} %{buildroot}%{_libexecdir}/
+install -m 0644 %{SOURCE5} %{buildroot}%{_userunitdir}/
+install -m 0644 %{SOURCE6} %{buildroot}%{_userunitdir}/
+install -m 0644 %{SOURCE7} %{buildroot}%{_userunitdir}/
 %check
 
+%post
+%systemd_user_post pixelbook-acpi.service
+%systemd_user_post pixelbook-display-orientation.service
+%systemd_user_post pixelbook-touchscreen-click.service
+%systemd_user_post pixelbook-keyboard-backlight.service
+
+%preun
+%systemd_user_preun pixelbook-acpi.service
+%systemd_user_preun pixelbook-display-orientation.service
+%systemd_user_preun pixelbook-touchscreen-click.service
+%systemd_user_preun pixelbook-keyboard-backlight.service
+
+%postun
+%systemd_user_postun pixelbook-acpi.service
+%systemd_user_postun pixelbook-display-orientation.service
+%systemd_user_postun pixelbook-touchscreen-click.service
+%systemd_user_postun pixelbook-keyboard-backlight.service
+
 %files
-/usr/bin/*
+%{_libexecdir}/*
+%{_userunitdir}/*
 
 %changelog
+* Wed May 18 2022 Jason Montleon <jmontleo@redhat.com> - 1.0.7-1
+- Implement jack detection workaround using ACPI
+- Start running scripts with user systemd services
+
 * Wed Jan 05 2022 Huy Le <dacrazyazn@gmail.com> - 1.0.6-1
 - Add stylus/pen to be included in display orientation change
 

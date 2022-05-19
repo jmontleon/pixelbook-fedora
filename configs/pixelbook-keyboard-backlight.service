@@ -1,0 +1,12 @@
+[Unit]
+Description=Pixelbook Keyboard Backlight
+
+[Service]
+Type=exec
+ExecStart=/usr/libexec/pixelbook-keyboard-backlight
+Restart=on-success
+RestartSec=3
+Environment=PYNPUT_BACKEND_KEYBOARD=uinput
+
+[Install]
+WantedBy=default.target

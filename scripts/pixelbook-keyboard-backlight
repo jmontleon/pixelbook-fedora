@@ -1,13 +1,44 @@
-#!/bin/bash
+#!/usr/bin/python3
 
-file=/sys/class/leds/chromeos\:\:kbd_backlight/brightness
+import os
 
-read -r cur < "$file"
+if "DISPLAY" not in os.environ or os.environ["DISPLAY"] is None:
+  os._exit(0)
 
-if [ "$cur" -eq "0" ]; then
-  printf '%d' "50" > "$file"
-elif [ "$cur" -eq "100" ]; then
-  printf '%d' "0" > "$file"
-else 
-  printf '%d' "100" > "$file"
-fi
+from pynput import keyboard
+
+# The key combination to check
+COMBINATION = {keyboard.Key.ctrl, keyboard.Key.space}
+
+# The currently active modifiers
+current = set()
+
+file = "/sys/class/leds/chromeos::kbd_backlight/brightness"
+
+def on_press(key):
+    if key in COMBINATION:
+        current.add(key)
+        if all(k in current for k in COMBINATION):
+            f = open(file, "w+")
+            cur = f.readline()
+            if cur == "0\n":
+              f.write("50")
+            elif cur == "100\n":
+              f.write("0")
+            else:
+              f.write("100")
+
+            f.close()
+
+    if key == keyboard.Key.esc:
+        listener.stop()
+
+def on_release(key):
+    try:
+        current.remove(key)
+    except KeyError:
+        pass
+
+
+with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+    listener.join()

@@ -1,0 +1,11 @@
+[Unit]
+Description=Monitor Pixelbook Display Orientation
+
+[Service]
+Type=exec
+ExecStart=/usr/libexec/pixelbook-display-orientation
+Restart=on-success
+RestartSec=3
+
+[Install]
+WantedBy=default.target
