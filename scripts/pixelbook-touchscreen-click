@@ -24,7 +24,7 @@ originaltime = lasttime
 oldclickx = 0
 oldclicky = 0
 
-if os.environ["XDG_CURRENT_DESKTOP"] == "GNOME" or os.environ["XDG_CURRENT_DESKTOP"] == "KDE":
+if "XDG_CURRENT_DESKTOP" in os.environ and (os.environ["XDG_CURRENT_DESKTOP"] == "GNOME" or os.environ["XDG_CURRENT_DESKTOP"] == "KDE"):
   subprocess.run(["sleep", "infinity"])
 
 for event in dev.read_loop():

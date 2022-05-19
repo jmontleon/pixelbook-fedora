@@ -13,6 +13,8 @@ Source6:    pixelbook-touchscreen-click.service
 Source7:    pixelbook-keyboard-backlight.service
 BuildArch:  noarch
 
+BuildRequires: systemd-rpm-macros
+
 Requires: acpid
 Requires: kbd
 Requires: iio-sensor-proxy
@@ -59,8 +61,8 @@ install -m 0644 %{SOURCE7} %{buildroot}%{_userunitdir}/
 %systemd_user_postun pixelbook-keyboard-backlight.service
 
 %files
-%{_libexecdir}/*
-%{_userunitdir}/*
+/%{_libexecdir}/*
+/%{_userunitdir}/*
 
 %changelog
 * Wed May 18 2022 Jason Montleon <jmontleo@redhat.com> - 1.0.7-1
