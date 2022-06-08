@@ -188,14 +188,27 @@
         append: yes
       become: true
 
-    - name: Check for acpi powerconf
-      stat: path=/etc/acpi/events/powerconf
+    - name: Check for acpi powerconf.disabled~
+      stat: path=/etc/acpi/events/powerconf.disabled~
       register: power_stat
 
-    - name: Disable powerbutton in acpid
-      command: mv /etc/acpi/events/powerconf /etc/acpi/events/powerconf.disabled~
+    - name: If we moved the file put it back
+      command: mv /etc/acpi/events/powerconf.disabled~ /etc/acpi/events/powerconf
       become: true
       when: power_stat.stat.exists
+
+    - name: Comment out powerconf
+      copy:
+        content: |
+                 # ACPID config to power down machine if powerbutton is pressed, but only if
+                 # no gnome-power-manager is running
+
+                 #The following two lines were commented out by the pixelbook-fedora playbook
+                 #event=button/power.*
+                 #action=/etc/acpi/actions/power.sh
+
+        dest: /etc/acpi/events/powerconf
+      become: true
 
     - name: Enable acpid
       become: true
