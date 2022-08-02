@@ -30,9 +30,6 @@ def on_press(key):
 
             f.close()
 
-    if key == keyboard.Key.esc:
-        listener.stop()
-
 def on_release(key):
     try:
         current.remove(key)
