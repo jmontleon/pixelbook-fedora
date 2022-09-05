@@ -132,7 +132,7 @@ If you enable Tap to Click in Gnome or Xfce it will also enable Tap to Drag. To 
 1. `sudo dnf -y install pixelbook-touchpad-tweak`
 
 ## Touchscreen
-1. `sudo dnf -y install pixebolbook-scripts`, if you haven't already.
+1. `sudo dnf -y install pixelbook-scripts`, if you haven't already.
 1. `sudo usermod -aG input $USER`, if you haven't already
 1. `sudo usermod -aG tty $USER`
 1. Gnome and KDE have their own gesture logic. For Xfce and others `systemctl --user --now enable pixelbook-touchscreen-click`
