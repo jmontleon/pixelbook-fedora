@@ -66,7 +66,7 @@ Once fedora is installed you may make use of the [ansible playbook](ansible/READ
 ## Audio
 By default audio will not work at all, but by copying topology and firmware files from a recovery image the speakers will work. With some additional configuration the microphone, headphone jack, and possibly other aspects work as well.
 
-1. Download the latest eve recovery image from [cros-updates-serving.appspot.com](https://cros-updates-serving.appspot.com/)
+1. Download the latest eve recovery image from [chromiumdash.appspot.com/serving-builds](https://chromiumdash.appspot.com/serving-builds?deviceCategory=Chrome%20OS)
 1. Unzip the file. As an example `unzip chromeos_13904.55.0_eve_recovery_stable-channel_mp-v2.bin.zip`
 1. Create device maps `sudo kpartx -av chromeos_13904.55.0_eve_recovery_stable-channel_mp-v2.bin`
 1. Mount the ChromeOS root filesystem `sudo mount -o ro /dev/mapper/loop0p3 /mnt`
