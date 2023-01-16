@@ -1,5 +1,5 @@
 ### This repo is no longer maintained
-- [Sound](https://github.com/jmontleon/pixelbook-fedora/issues/51). [is](https://github.com/jmontleon/pixelbook-fedora/issues/47). [always](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L39). [broken](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L36).
+- [Sound](https://github.com/jmontleon/pixelbook-fedora/issues/51). [is](https://github.com/jmontleon/pixelbook-fedora/issues/47). [always](https://bugzilla.kernel.org/show_bug.cgi?id=215109). [always](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L39). [broken](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L36).
 
 # Fedora on Pixelbook
 
