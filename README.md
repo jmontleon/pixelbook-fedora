@@ -1,6 +1,3 @@
-### This repo is no longer maintained
-- [Sound](https://github.com/jmontleon/pixelbook-fedora/issues/51). [is](https://github.com/jmontleon/pixelbook-fedora/issues/47). [always](https://bugzilla.kernel.org/show_bug.cgi?id=215109). [always](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L39). [broken](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L36).
-
 # Fedora on Pixelbook
 
 This process can be used to get Fedora installed on your Chromebook. **This process will destroy your data so make sure you have backups of anything you need. When you're done ChromeOS will not be bootable and your data will be wiped.** See the notes below for how to adapt them for [other distrbutions](#other-distributions).
@@ -10,7 +7,7 @@ What works and doesn't work:
 | Component     | Status      |
 | ------------- |-------------|
 | Ambient Light Sensor | Mostly Working [Issue](https://github.com/jmontleon/pixelbook-fedora/issues/18)  |
-| Audio | Broken as of 6.1.0 |
+| Audio | Working |
 | Brightness | [Working](#Brightness) |
 | Bluetooth | Working |
 | Camera | Working |
@@ -162,7 +159,7 @@ Issues are welcome if you think you found something Pixelbook specific. Full log
 # Other distributions
 For the most part nothing in this repo is distribution specific other than the availability of packages to simplify the install process. The primary adjustments you will need to be concerned about are listed below.
 
-1. An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0. 5.16.0 introduced fixes to the display backlight. In general 5.17.0 and above should work well.
+1. An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0. 5.16.0 introduced fixes to the display backlight. In general 5.17.0 and above should work well up until 6.0-6.0.9 where audio is broken, fixed again in 6.0.10, until broken again in 6.1.0-6.1.12 and fixed again in 6.1.13+. HDMI audio has not worked since before 5.17.0. [This regression thread](https://lore.kernel.org/regressions/CAJD_bPKQdtaExvVEKxhQ47G-ZXDA=k+gzhMJRHLBe=mysPnuKA@mail.gmail.com/T/#u) contains a patch proposed by me. Hopefully this is at least close to a proper fix the problem is resolved soon.
 1. Reference [this PR](https://gitlab.com/cki-project/kernel-ark/-/merge_requests/1616/diffs) to see the kernel options that must be enabled for hardware support.
 1. To match placement of configuration and scripts that are provided by packages look at the corresponding spec file. All sources are located in the [configs](https://github.com/jmontleon/pixelbook-fedora/tree/main/configs) and [scripts](https://github.com/jmontleon/pixelbook-fedora/tree/main/scripts) directories.
 1. When a package is referenced, using the alsa ucm package as an example, note the [sources](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L6-L7) in the spec file and where they are [installed](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L21-L22) and manually do the same. Alsa is a special case in that 1.2.6 and above put these files in a conf.d directory. For older versions you'll probably need to move them one directory up.
