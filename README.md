@@ -81,7 +81,7 @@ By default audio will not work at all, but by copying topology and firmware file
     1. `sudo dnf swap wireplumber pipewire-media-session`
     1. `sudo dnf swap pipewire-jack-audio-connection-kit jack-audio-connection-kit`
     1. `sudo dnf remove pipewire-alsa`
-1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm pixelbook-acpi`
+1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm pixelbook-scripts`
 1. `systemctl --user --now enable pixelbook-acpi`
 1. After rebooting you should have audio (Note: Some systems require 2 or occasionally 3 reboots. See the troubleshooting section for details)
 
