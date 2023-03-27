@@ -150,16 +150,23 @@ Watching journalctl you'll note lots of logging about AER corrections. The pixel
 A lot of common software is not available in Fedora, such as nvidia drivers and vlc. Fortunately a plethora of software is available from [RPM Fusion](https://rpmfusion.org/).
 
 # Troubleshooting.
-When rebooting users have observed sound continuing to fail and the mouse not working. If this happens, the problem is often remedied by rebooting via the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again. The touchpad section above contains a service that will mask the problem in the case of the mouse.  
+When rebooting users have observed sound continuing to fail and the mouse not working. If this happens, the problem is often remedied by rebooting via the Power+Refresh button or holding down the the power button until the system powers off and then using it to power on the system again. The touchpad section above contains a service that will mask the problem.  
   
-See past issues for examples [1](https://github.com/jmontleon/pixelbook-fedora/issues/1) and [2](https://github.com/jmontleon/pixelbook-fedora/issues/2)  
+5.16 introduced fixes to the display backlight.  
+  
+Audio has been a particularly problematic area at times. Make sure you're not using a known broken kernel.
+- An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0. At some point 5.15 LTS kernels were also fixed.
+- In general 5.17.0 and above should work well although HDMI output has been broken since 5.17.0
+- 6.0-6.0.9 were broken
+- 6.1-6.1.12 were broken
+- A proposed [patch](https://lore.kernel.org/regressions/060ebffd-6ecd-f2f7-6fdf-5e7b8c544d0a@linux.intel.com/T/#mfffab5d0c6cba4395d40ea7e853a925cad4c8d3d) for HDMI output is available but not yet in the kernel.
+- There was one [issue](https://github.com/jmontleon/pixelbook-fedora/issues/56) report for the error `rt5514 i2c-10EC5514:00: Device with ID register e0220042 is not rt5514` appearing in dmesg and audio failing to work. The cause is unknown, but restoring ChromeOS and Reflashing the MrChromebox firmware appeared to resolve the issue.
   
 Issues are welcome if you think you found something Pixelbook specific. Full logs, detailed explanations of steps taken, configuration performed, etc. are important. It is impossible to provide help with comments that simply state things aren't working as expected.
 
 # Other distributions
 For the most part nothing in this repo is distribution specific other than the availability of packages to simplify the install process. The primary adjustments you will need to be concerned about are listed below.
 
-1. An audio issue was introduced in the 5.15.5 kernel and fixed in 5.17.0. 5.16.0 introduced fixes to the display backlight. In general 5.17.0 and above should work well up until 6.0-6.0.9 where audio is broken, fixed again in 6.0.10, until broken again in 6.1.0-6.1.12 and fixed again in 6.1.13+. HDMI audio has not worked since before 5.17.0. [This regression thread](https://lore.kernel.org/regressions/CAJD_bPKQdtaExvVEKxhQ47G-ZXDA=k+gzhMJRHLBe=mysPnuKA@mail.gmail.com/T/#u) contains a patch proposed by me. Hopefully this is at least close to a proper fix the problem is resolved soon.
 1. Reference [this PR](https://gitlab.com/cki-project/kernel-ark/-/merge_requests/1616/diffs) to see the kernel options that must be enabled for hardware support.
 1. To match placement of configuration and scripts that are provided by packages look at the corresponding spec file. All sources are located in the [configs](https://github.com/jmontleon/pixelbook-fedora/tree/main/configs) and [scripts](https://github.com/jmontleon/pixelbook-fedora/tree/main/scripts) directories.
 1. When a package is referenced, using the alsa ucm package as an example, note the [sources](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L6-L7) in the spec file and where they are [installed](https://github.com/jmontleon/pixelbook-fedora/blob/main/specs/pixelbook-alsa-ucm.spec#L21-L22) and manually do the same. Alsa is a special case in that 1.2.6 and above put these files in a conf.d directory. For older versions you'll probably need to move them one directory up.
