@@ -76,12 +76,7 @@ By default audio will not work at all, but by copying topology and firmware file
     1. `sudo cp /mnt/lib/firmware/intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin /lib/firmware/intel`
     1. `sudo mkdir -p /opt/google/dsm/`
     1. `sudo cp /mnt/opt/google/dsm/dsmparam.bin /opt/google/dsm/dsmparam.bin`
-1. Replace pipewire with pulseaudio to fix a mic noise [issue](https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/1452)
-    1. `sudo dnf swap --allowerasing pipewire-pulseaudio pulseaudio`
-    1. `sudo dnf swap wireplumber pipewire-media-session`
-    1. `sudo dnf swap pipewire-jack-audio-connection-kit jack-audio-connection-kit`
-    1. `sudo dnf remove pipewire-alsa`
-1. Add the ucm2 profile `sudo dnf -y install pixelbook-alsa-ucm pixelbook-scripts`
+1. Add audio packages `sudo dnf -y install pixelbook-alsa-ucm pixelbook-wireplumber pixelbook-scripts`
 1. `systemctl --user --now enable pixelbook-acpi`
 1. After rebooting you should have audio (Note: Some systems require 2 or occasionally 3 reboots. See the troubleshooting section for details)
 
