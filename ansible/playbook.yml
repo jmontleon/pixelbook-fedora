@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  vars:
+    sound_server: pipewire
   tasks:
   - name: Check distribution
     fail:
@@ -144,29 +146,58 @@
       - dsp_lib_dsm_core_spt_release.bin
       - intel/dsp_fw_C75061F3-F2B2-4DCC-8F9F-82ABB4131E66.bin
 
-    - name: Swap pipewire to pulseaudio
-      become: true
-      command:
-        cmd: "dnf swap --allowerasing -y pipewire-pulseaudio pulseaudio"
-        warn: false
+    - when:
+      - sound_server == "pulseaudio"
+      block:
+      - name: Swap pipewire to pulseaudio
+        become: true
+        command:
+          cmd: "dnf swap --allowerasing -y pipewire-pulseaudio pulseaudio"
 
-    - name: Swap wireplumber
-      become: true
-      command:
-        cmd: "dnf swap wireplumber -y pipewire-media-session"
-        warn: false
+      - name: Swap wireplumber
+        become: true
+        command:
+          cmd: "dnf swap --allowerasing -y wireplumber pipewire-media-session"
 
-    - name: Swap jack kit
-      become: true
-      command:
-        cmd: "dnf swap -y pipewire-jack-audio-connection-kit jack-audio-connection-kit"
-        warn: false
+      - name: Swap jack kit
+        become: true
+        command:
+          cmd: "dnf swap --allowerasing -y pipewire-jack-audio-connection-kit jack-audio-connection-kit"
 
-    - name: Remove pipewire-alsa
-      become: true
-      dnf:
-        name: pipewire-alsa-ucm
-        state: absent
+      - name: Remove pipewire packages
+        become: true
+        dnf:
+          name:
+          - pipewire-alsa
+          - pipewire
+          state: absent
+
+    - when:
+      - sound_server == "pipewire"
+      block:
+      - name: Swap pulseaudio to pipewire
+        become: true
+        command:
+          cmd: "dnf swap --allowerasing -y pulseaudio pipewire-pulseaudio"
+
+      - name: Swap wireplumber
+        become: true
+        command:
+          cmd: "dnf swap --allowerasing -y pipewire-media-session wireplumber"
+
+      - name: Swap jack kit
+        become: true
+        command:
+          cmd: "dnf swap --allowerasing -y jack-audio-connection-kit pipewire-jack-audio-connection-kit"
+
+      - name: Install pipewire packages
+        become: true
+        dnf:
+          name:
+          - pipewire-alsa
+          - pipewire
+          - pixelbook-wireplumber
+          state: latest
 
     - name: Install pixelbook packages from COPR
       become: true
