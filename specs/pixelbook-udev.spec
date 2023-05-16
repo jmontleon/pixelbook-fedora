@@ -1,6 +1,6 @@
 Name:       pixelbook-udev
-Version:    1.0.1
-Release:    2%{?dist}
+Version:    1.0.2
+Release:    1%{?dist}
 License:    BSD
 Summary:    udev rules for Pixelbook backlights, sensors, and keyboard
 Source0:    99-pixelbook-backlights.rules 
@@ -42,6 +42,9 @@ systemd-hwdb update
 udevadm control --reload-rules
 
 %changelog
+* Mon May 15 2023 Jason Montleon <jmontleo@redhat.com> - 1.0.2-1
+- Update left meta to be capslock
+
 * Thu Aug 05 2021 Jason Montleon <jmontleo@redhat.com> - 1.0.1-2
 - Fix package obsoletes
 

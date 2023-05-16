@@ -88,17 +88,8 @@ By default audio will not work at all, but by copying topology and firmware file
 
 ## Keyboard
 
-### Hotkeys
+### Hotkeys / Capslock
 1. `sudo dnf -y install pixelbook-udev`, if you haven't already.
-
-### Capslock
-In Xfce, to use the Search key as a Capslock:
-1. `sudo dnf -y install xdotool`
-1. Configure a keyboard shortcut for SuperL to run `xdotool key Caps_Lock`
-
-In Gnome, to use the Capslock and Super keys run these commands at login or add them to a script to run at login:
-1. `xmodmap -e 'keysym Super_L = Caps_Lock'`
-1. `xmodmap -e 'keysym Super_R = Super_L'`
 
 ### Backlight
 1. `sudo dnf -y install pixelbook-scripts`
