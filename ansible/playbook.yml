@@ -2,6 +2,7 @@
 - hosts: localhost
   vars:
     sound_server: pipewire
+    leftmeta: capslock
   tasks:
   - name: Check distribution
     fail:
@@ -269,6 +270,40 @@
       - pixelbook-display-orientation
       - pixelbook-touchscreen-click
       - pixelbook-keyboard-backlight
+
+    - name: Ensure keyboard hwdb is not overridden
+      become: true
+      file:
+        path: /etc/udev/hwdb.d/61-eve-keyboard.hwdb
+        state: absent
+      when: leftmeta == "capslock"
+
+    - name: Create keyboard hwdb override
+      become: true
+      copy:
+        src: /usr/lib/udev/hwdb.d/61-eve-keyboard.hwdb
+        dest: /etc/udev/hwdb.d/61-eve-keyboard.hwdb
+      when: leftmeta != "capslock"
+
+    - name: Set leftmeta to leftmeta in hwdb override
+      become: true
+      lineinfile:
+        path: /etc/udev/hwdb.d/61-eve-keyboard.hwdb
+        regexp: '^ KEYBOARD_KEY_db=capslock$'
+        line: ' KEYBOARD_KEY_db=leftmeta'
+      when: leftmeta != "capslock"
+
+    - name: Update hwdb
+      become: true
+      shell: systemd-hwdb update
+
+    - name: Reload udev rules
+      become: true
+      shell: udevadm control --reload-rules
+
+    - name: trigger udev
+      become: true
+      shell: udevadm trigger
 
     always:
     - name: Unmount recovery image
