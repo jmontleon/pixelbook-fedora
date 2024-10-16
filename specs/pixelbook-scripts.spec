@@ -1,5 +1,5 @@
 Name:       pixelbook-scripts
-Version:    1.0.8
+Version:    1.0.9
 Release:    1%{?dist}
 Summary:    Scripts for interacting with pixelbook backlights and touchpad
 License:    WTFPL
@@ -65,6 +65,9 @@ install -m 0644 %{SOURCE7} %{buildroot}%{_userunitdir}/
 /%{_userunitdir}/*
 
 %changelog
+* Tue Oct 16 2024 Jason Montleon <jmontleo@redhat.com> - 1.0.9-1
+- Rewrite pixelbook-keyboard-backlight using only evdev for python 3.13
+
 * Tue Aug 02 2022 Jason Montleon <jmontleo@redhat.com> - 1.0.8-1
 - Stop keyboard backlight service from failing
 
