@@ -1,41 +1,36 @@
 #!/usr/bin/python3
 
-import os
+import evdev
 
-if "DISPLAY" not in os.environ or os.environ["DISPLAY"] is None:
-  os._exit(0)
+def detect_key_combination():
+    devices = evdev.list_devices()
+    for device in devices:
+        if evdev.InputDevice(device).name == "AT Translated Set 2 keyboard":
+            keyboard = evdev.InputDevice(device)
+            break
 
-from pynput import keyboard
+    key_combo = [evdev.ecodes.KEY_LEFTCTRL, evdev.ecodes.KEY_SPACE]
+    file = "/sys/class/leds/chromeos::kbd_backlight/brightness"
+    keys_down = set()
 
-# The key combination to check
-COMBINATION = {keyboard.Key.ctrl, keyboard.Key.space}
+    for event in keyboard.read_loop():
+        if event.type == evdev.ecodes.EV_KEY:
+            if event.value == 1:
+                keys_down.add(event.code)
+            elif event.value == 0:
+                keys_down.discard(event.code)
 
-# The currently active modifiers
-current = set()
+            if keys_down == set(key_combo):
+                f = open(file, "w+")
+                cur = f.readline()
+                if cur == "0\n":
+                  f.write("50")
+                elif cur == "100\n":
+                  f.write("0")
+                else:
+                  f.write("100")
 
-file = "/sys/class/leds/chromeos::kbd_backlight/brightness"
+                f.close()
 
-def on_press(key):
-    if key in COMBINATION:
-        current.add(key)
-        if all(k in current for k in COMBINATION):
-            f = open(file, "w+")
-            cur = f.readline()
-            if cur == "0\n":
-              f.write("50")
-            elif cur == "100\n":
-              f.write("0")
-            else:
-              f.write("100")
-
-            f.close()
-
-def on_release(key):
-    try:
-        current.remove(key)
-    except KeyError:
-        pass
-
-
-with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-    listener.join()
+if __name__ == "__main__":
+    detect_key_combination()
