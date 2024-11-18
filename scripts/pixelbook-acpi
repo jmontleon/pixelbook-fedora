@@ -3,10 +3,10 @@ if [ -z "$DISPLAY" ]; then
   exit 0
 fi
 
-acpi_listen > /tmp/acpi.log 2>&1 &
+acpi_listen > /tmp/"$USER-acpi".log 2>&1 &
 
-while inotifywait -e modify /tmp/acpi.log; do
-  EVENT=$(tail -n 1 /tmp/acpi.log)
+while inotifywait -e modify /tmp/"$USER-acpi".log; do
+  EVENT=$(tail -n 1 /tmp/"$USER-acpi".log)
   if echo "$EVENT" | grep '0000008A'; then
     if echo "$EVENT" | grep '1$' ; then
       if [ "$XDG_CURRENT_DESKTOP" == "GNOME" ]; then
