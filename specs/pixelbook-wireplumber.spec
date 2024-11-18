@@ -3,7 +3,7 @@ Version:    1.0.0
 Release:    1%{?dist}
 License:    MIT
 Summary:    Wireplumber config for the Pixelbooks kbl_r5514_5663_max
-Source0:    50-alsa-config.lua
+Source0:    50-alsa-config.conf
 BuildArch:  noarch
 
 Requires: wireplumber
@@ -16,8 +16,8 @@ Wireplumber config for the Pixelbooks kbl_r5514_5663_max
 %build
 
 %install
-mkdir -p %{buildroot}/etc/wireplumber/main.lua.d/
-install -m 0644 %{SOURCE0} %{buildroot}/etc/wireplumber/main.lua.d/
+mkdir -p %{buildroot}/etc/wireplumber/wireplumber.conf.d/
+install -m 0644 %{SOURCE0} %{buildroot}/etc/wireplumber/wireplumber.conf.d/
 
 %check
 
