@@ -1,5 +1,5 @@
 Name:       pixelbook-wireplumber
-Version:    1.0.0
+Version:    1.0.1
 Release:    1%{?dist}
 License:    MIT
 Summary:    Wireplumber config for the Pixelbooks kbl_r5514_5663_max
