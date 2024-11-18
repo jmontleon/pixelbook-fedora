@@ -22,8 +22,11 @@ install -m 0644 %{SOURCE0} %{buildroot}/etc/wireplumber/wireplumber.conf.d/
 %check
 
 %files
-/etc/wireplumber/main.lua.d/50-alsa-config.lua
+/etc/wireplumber/wireplumber.conf.d/50-alsa-config.conf
 
 %changelog
+* Sun Nov 17 2024 Daniel Brackenbury <daniel.brackenbury@gmail.com> - 1.0.1-1
+- Update configuration for Wireplumber 0.5.5
+
 * Fri Mar 31 2023 Jason Montleon <jmontleo@redhat.com> - 1.0.0-1
 - Initial Build
