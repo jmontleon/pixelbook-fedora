@@ -212,25 +212,3 @@
     - name: trigger udev
       become: true
       shell: udevadm trigger
-
-    always:
-    - name: Unmount recovery image
-      mount:
-        path: /mnt/chromeos_recovery_image
-        src: "/dev/mapper/{{ loop_device }}"
-        opts: ro
-        state: absent
-        fstab: "{{ tmp_dir.path }}/fstab }}"
-      become: true
-      when: tmp_dir is defined
-
-    - name: Remove device maps
-      command: "kpartx -dv {{ tmp_dir.path }}/{{ recovery_image_unarchive_results.files | first }}"
-      become: true
-      when: recovery_image_unarchive_results is defined
-
-    - name: Remove tmp directory
-      file:
-        state: absent
-        path: "{{ tmp_dir.path }}"
-      when: tmp_dir is defined
